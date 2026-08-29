@@ -18,7 +18,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Navbar />
         <main className="flex-1 flex flex-col">{children}</main>
         <footer className="border-t border-[var(--border)] py-6 text-center text-xs text-[var(--forge-muted)]">
-          <div className="mx-auto max-w-[1160px] px-4">© 2026 PromptForge</div>
+          <div className="mx-auto max-w-[1160px] px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
+            <span>© 2026 PromptForge</span>
+            <span>Feedback: <a href="mailto:syahlanbudi73@gmail.com" className="underline">syahlanbudi73@gmail.com</a> • <a href="/feedback" className="underline">Kirim Feedback</a></span>
+          </div>
         </footer>
       </body>
     </html>

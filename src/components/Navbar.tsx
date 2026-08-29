@@ -8,6 +8,7 @@ const nav = [
   { href: "/optimizer", label: "Optimizer" },
   { href: "/templates", label: "Templates" },
   { href: "/history", label: "History" },
+  { href: "/feedback", label: "Feedback" },
 ];
 
 export default function Navbar() {
