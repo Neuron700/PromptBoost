@@ -58,16 +58,16 @@ export default function Navbar() {
           {userEmail ? (
             <span className="hidden sm:inline text-xs font-mono px-2 py-1 rounded-full bg-[var(--muted)] border border-[var(--border)] max-w-[140px] truncate">{userEmail}</span>
           ) : null}
-          <Link href="/auth" className={`hidden sm:inline-flex h-8 px-3 rounded-full border text-xs font-medium items-center ${userEmail ? "border-[var(--border)] bg-[var(--card)]" : "bg-[var(--forge-ink)] dark:bg-white text-white dark:text-black border-transparent"}`}>
+          <Link href="/auth" className={`hidden sm:inline-flex h-9 sm:h-8 px-3 rounded-full border text-xs font-medium items-center min-h-[36px] ${userEmail ? "border-[var(--border)] bg-[var(--card)]" : "bg-[var(--forge-ink)] dark:bg-white text-white dark:text-black border-transparent"}`}>
             {userEmail ? "Akun" : "Masuk"}
           </Link>
-          <button onClick={toggle} aria-label="Toggle theme" className="w-8 h-8 grid place-items-center rounded-full border border-[var(--border)] hover:bg-[var(--muted)] transition-colors">
+          <button onClick={toggle} aria-label="Toggle theme" className="w-9 h-9 sm:w-8 sm:h-8 grid place-items-center rounded-full border border-[var(--border)] hover:bg-[var(--muted)] transition-colors shrink-0">
             {dark ? <Sun size={14} /> : <Moon size={14} />}
           </button>
-          <Link href="/optimizer" className="hidden sm:inline-flex h-8 px-4 rounded-full bg-[var(--forge-ember)] hover:bg-[var(--forge-ember-hover)] text-white text-sm font-medium items-center transition-colors">
+          <Link href="/optimizer" className="hidden sm:inline-flex h-9 sm:h-8 px-4 rounded-full bg-[var(--forge-ember)] hover:bg-[var(--forge-ember-hover)] text-white text-sm font-medium items-center transition-colors min-h-[36px]">
             Start Building
           </Link>
-          <button onClick={() => setOpen(!open)} className="md:hidden w-8 h-8 grid place-items-center rounded-full border border-[var(--border)]" aria-label="Menu">
+          <button onClick={() => setOpen(!open)} className="md:hidden w-9 h-9 grid place-items-center rounded-full border border-[var(--border)] shrink-0" aria-label="Menu">
             {open ? <X size={16} /> : <Menu size={16} />}
           </button>
         </div>

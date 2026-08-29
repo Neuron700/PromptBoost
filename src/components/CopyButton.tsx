@@ -46,7 +46,7 @@ export default function CopyButton({ text, variant="text" }: { text: string; var
 
   return (
     <button onClick={doAction} aria-label={`${variant === "text" ? "Copy" : "Save"} as ${variant}`}
-      className={`inline-flex items-center gap-1.5 h-8 px-3 rounded-full text-xs font-medium border transition-colors cursor-pointer
+      className={`inline-flex items-center gap-1.5 h-9 sm:h-8 px-3.5 sm:px-3 rounded-full text-xs font-medium border transition-colors cursor-pointer min-h-[36px]
       ${done ? "bg-[var(--forge-signal)] text-white border-transparent" : "bg-[var(--card)] hover:bg-[var(--muted)] border-[var(--border)]"}`}>
       {done ? <Check size={13} /> : variant==="json" ? <FileJson size={13}/> : variant==="markdown" ? <FileText size={13}/> : <Copy size={13}/>}
       {label ? label : variant==="json" ? "Copy JSON" : variant==="markdown" ? "Copy MD" : "Copy"}

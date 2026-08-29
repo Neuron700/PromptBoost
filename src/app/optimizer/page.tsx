@@ -78,7 +78,7 @@ export default function OptimizerPage() {
           </div>
 
           <button type="button" onClick={optimize} disabled={loading}
-            className="mt-5 h-11 rounded-full bg-[var(--forge-ember)] hover:bg-[var(--forge-ember-hover)] disabled:opacity-50 text-white font-medium inline-flex items-center justify-center gap-2 transition-colors cursor-pointer">
+            className="mt-5 h-12 sm:h-11 rounded-full bg-[var(--forge-ember)] hover:bg-[var(--forge-ember-hover)] disabled:opacity-50 text-white font-medium inline-flex items-center justify-center gap-2 transition-colors cursor-pointer text-[15px] sm:text-sm min-h-[48px]">
             {loading ? <><span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> Menempa...</> : <><Hammer size={16}/> Optimize</>}
           </button>
 
@@ -92,10 +92,10 @@ export default function OptimizerPage() {
         <ForgeRail active={loading} />
 
         {/* RIGHT: result */}
-        <section className="flex-1 rounded-2xl border border-[var(--border)] bg-[var(--card)] p-4 sm:p-5 min-w-0 flex flex-col">
-          <div className="flex items-center justify-between">
+        <section className="flex-1 rounded-2xl border border-[var(--border)] bg-[var(--card)] p-4 sm:p-5 min-w-0 flex flex-col overflow-hidden">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
             <div className="font-mono text-[11px] tracking-[0.14em] text-[var(--forge-muted)]">OPTIMIZED PROMPT</div>
-            {result && <div className="flex items-center gap-1.5"><CopyButton text={result.optimizedPrompt} variant="text"/><CopyButton text={result.optimizedPrompt} variant="markdown"/><CopyButton text={result.optimizedPrompt} variant="json"/></div>}
+            {result && <div className="flex items-center gap-1.5 flex-wrap"><CopyButton text={result.optimizedPrompt} variant="text"/><CopyButton text={result.optimizedPrompt} variant="markdown"/><CopyButton text={result.optimizedPrompt} variant="json"/></div>}
           </div>
 
           {!result ? (
