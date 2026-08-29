@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+  <rect width="100" height="100" rx="22" fill="black"/>
+  <!-- hood outer white -->
+  <path d="M36 18 L32 9 L42 14 L50 17 L58 14 L68 9 L64 18 C76 24 84 38 84 54 C84 70 76 82 64 88 C64 88 62 82 60 80 C60 80 58 86 56 88 L54 88 C54 88 52 82 50 80 C50 80 48 86 46 88 L44 88 C44 88 42 82 40 80 C40 80 38 86 36 88 C24 82 16 70 16 54 C16 38 24 24 36 18 Z" fill="white"/>
+  <!-- inner hood shadow black -->
+  <path d="M50 29 C62 31 72 40 72 54 C72 64 68 74 60 80 C60 80 58 74 56 72 L54 88 L50 88 L46 88 L44 88 C36 82 32 72 32 58 C32 44 38 31 50 29 Z" fill="black"/>
+  <!-- cat face white -->
+  <path d="M50 42 C54 42 57 45 58 48 L58 48 C58 50 56 54 53 56 C52 57 51 58 50 58 C49 58 48 57 47 56 C44 54 42 50 42 48 C43 45 46 42 50 42 Z" fill="white"/>
+  <!-- nose -->
+  <path d="M50 49 L53 50 L50 53 L47 50 Z" fill="black"/>
+  <!-- whiskers -->
+  <path d="M42 49 C38 49 34 50 32 51" stroke="white" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+  <path d="M42 51.5 C38 52 34 53 32 54" stroke="white" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+  <path d="M42 54 C38 55 34 56 32 57" stroke="white" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+  <path d="M58 49 C62 49 66 50 68 51" stroke="white" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+  <path d="M58 51.5 C62 52 66 53 68 54" stroke="white" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+  <path d="M58 54 C62 55 66 56 68 57" stroke="white" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+</svg>

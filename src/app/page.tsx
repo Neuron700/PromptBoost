@@ -1,69 +1,69 @@
-import Image from "next/image";
+import Hero from "@/components/Hero";
+import Link from "next/link";
+import { Hammer, Layers, Sparkles, ArrowRight, Check } from "lucide-react";
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <div className="flex-1">
+      <Hero />
+
+      <section className="mx-auto max-w-[1160px] px-4 sm:px-6 pb-8">
+        <div className="grid md:grid-cols-3 gap-4">
+          {[
+            { title:"Pilih Tujuan", desc:"9 kategori dengan struktur berbeda. Coding ≠ Writing ≠ Image.", icon: Layers },
+            { title:"Tempa Prompt", desc:"AI merapikan intent, konteks, dan constraints jadi blok ROLE/OBJECTIVE.", icon: Hammer },
+            { title:"Bandingkan Skor", desc:"Lihat Before/After 38 → 89 plus breakdown Clarity/Context.", icon: Sparkles },
+          ].map((f)=> (
+            <div key={f.title} className="rounded-2xl border border-[var(--border)] bg-[var(--card)] p-5">
+              <f.icon size={18} className="text-[var(--forge-ember)]" />
+              <div className="mt-3 font-semibold text-sm">{f.title}</div>
+              <div className="mt-1 text-sm leading-5 text-[var(--forge-muted)]">{f.desc}</div>
+            </div>
+          ))}
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </section>
+
+      <section className="mx-auto max-w-[1160px] px-4 sm:px-6 pb-10">
+        <div className="rounded-2xl border border-[var(--border)] bg-[var(--forge-ink)] dark:bg-white text-white dark:text-[var(--forge-paper)] p-6 sm:p-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div>
+            <div className="font-mono text-[11px] tracking-[0.16em] opacity-70">SIAP MENEMPA?</div>
+            <div className="mt-1 text-xl font-semibold">Mulai dari ide mentah, bawa pulang prompt siap pakai.</div>
+            <div className="mt-2 flex flex-wrap gap-2 text-xs opacity-80">
+              <span className="inline-flex items-center gap-1.5"><Check size={12}/> Copy Text/MD/JSON</span>
+              <span className="inline-flex items-center gap-1.5"><Check size={12}/> Score breakdown</span>
+              <span className="inline-flex items-center gap-1.5"><Check size={12}/> History</span>
+            </div>
+          </div>
+          <Link href="/optimizer" className="inline-flex items-center gap-2 h-10 px-6 rounded-full bg-[var(--forge-ember)] text-white font-medium shrink-0">
+            Buka Optimizer <ArrowRight size={16}/>
+          </Link>
         </div>
-      </main>
+      </section>
+
+      <section className="mx-auto max-w-[1160px] px-4 sm:px-6 pb-12">
+        <div className="rounded-2xl border border-[var(--border)] bg-[var(--card)] p-5 sm:p-6">
+          <div className="text-sm font-semibold">Cara kerja</div>
+          <div className="mt-4 flex flex-col sm:flex-row gap-4 items-stretch">
+            <div className="flex-1 rounded-xl bg-[var(--muted)] p-4 border border-transparent">
+              <div className="w-8 h-8 rounded-full bg-[var(--forge-ink)] dark:bg-white text-white dark:text-black grid place-items-center text-xs font-mono">→</div>
+              <div className="mt-3 font-medium text-sm">Tulis prompt mentah</div>
+              <div className="text-xs text-[var(--forge-muted)] mt-1">Contoh: “buat website portfolio keren”</div>
+            </div>
+            <div className="hidden sm:grid place-items-center text-[var(--forge-muted)]">•</div>
+            <div className="flex-1 rounded-xl bg-[var(--muted)] p-4 border border-transparent">
+              <div className="w-8 h-8 rounded-full bg-[var(--forge-ember)] text-white grid place-items-center"><Hammer size={14}/></div>
+              <div className="mt-3 font-medium text-sm">Pilih kategori dan tempa</div>
+              <div className="text-xs text-[var(--forge-muted)] mt-1">Coding, Writing, Image, dan lainnya</div>
+            </div>
+            <div className="hidden sm:grid place-items-center text-[var(--forge-muted)]">•</div>
+            <div className="flex-1 rounded-xl bg-[var(--muted)] p-4 border border-transparent">
+              <div className="w-8 h-8 rounded-full bg-[var(--forge-signal)] text-white grid place-items-center text-xs font-mono">✓</div>
+              <div className="mt-3 font-medium text-sm">Copy & bandingkan</div>
+              <div className="text-xs text-[var(--forge-muted)] mt-1">Before 38 → After 89</div>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }

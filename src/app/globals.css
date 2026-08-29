@@ -1,26 +1,82 @@
 @import "tailwindcss";
 
+/* PromptForge — Forge Workshop semantic tokens
+   ink = baja/arang, paper = kertas kerja, slate = meja baja,
+   ember = bara api (CTA only), signal = percikan sukses */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --forge-ink: oklch(0.17 0.02 260);
+  --forge-paper: oklch(0.98 0.005 90);
+  --forge-slate: oklch(0.94 0.006 260);
+  --forge-muted: oklch(0.55 0.02 260);
+  --forge-line: oklch(0.88 0.01 260);
+  --forge-ember: oklch(0.62 0.19 30);
+  --forge-ember-hover: oklch(0.58 0.20 30);
+  --forge-signal: oklch(0.62 0.16 145);
+  --forge-warn: oklch(0.68 0.14 55);
+
+  --background: var(--forge-paper);
+  --foreground: var(--forge-ink);
+  --card: oklch(1 0 0);
+  --card-foreground: var(--forge-ink);
+  --border: var(--forge-line);
+  --muted: var(--forge-slate);
+  --muted-foreground: var(--forge-muted);
+  --primary: var(--forge-ember);
+  --primary-foreground: oklch(0.98 0 0);
+}
+
+.dark {
+  --forge-ink: oklch(0.96 0.005 90);
+  --forge-paper: oklch(0.17 0.02 260);
+  --forge-slate: oklch(0.23 0.02 260);
+  --forge-muted: oklch(0.65 0.02 260);
+  --forge-line: oklch(0.28 0.02 260);
+  --background: var(--forge-paper);
+  --foreground: var(--forge-ink);
+  --card: oklch(0.21 0.02 260);
+  --card-foreground: var(--forge-ink);
+  --border: var(--forge-line);
+  --muted: var(--forge-slate);
+  --muted-foreground: var(--forge-muted);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-border: var(--border);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
+* { border-color: var(--border); }
+html { scrollbar-gutter: stable; }
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
 }
+::selection { background: var(--forge-ember); color: white; }
+
+/* focus visible for keyboard a11y */
+:focus-visible {
+  outline: 2px solid var(--forge-ember);
+  outline-offset: 2px;
+}
+
+/* reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* custom scrollbar subtle */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-thumb { background: var(--forge-line); border-radius: 999px; }
