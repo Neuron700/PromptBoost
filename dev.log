@@ -1,0 +1,19 @@
+
+> promptforge@0.1.0 dev
+> next dev --port 3001
+
+▲ Next.js 16.3.3 (Turbopack)
+- Local:         http://localhost:3001
+- Network:       http://192.168.1.4:3001
+- Environments: .env.local
+✓ Ready in 1152ms
+✓ Running next.config.ts took 98ms
+
+ GET /optimizer 200 in 768ms (next.js: 381ms, application-code: 387ms)
+OPTIMIZE ERROR Expected property name or '}' in JSON at position 1 (line 1 column 2) SyntaxError: Expected property name or '}' in JSON at position 1 (line 1 column 2)
+    at JSON.parse (<anonymous>)
+    at parseJSONFromBytes (node:internal/deps/undici/undici:4394:19)
+    at successSteps (node:internal/deps/undici/undici:7048:27)
+    at readAllBytes (node:internal/deps/undici/undici:5965:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+ POST /api/optimize 500 in 138ms (next.js: 91ms, application-code: 47ms)

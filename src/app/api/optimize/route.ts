@@ -17,7 +17,7 @@ export async function POST(req: NextRequest) {
     const result = await optimizeWithAI(prompt, category, outputMode);
     return NextResponse.json(result);
   } catch (e:any) {
-    // per user choice 12b -> system style, but we give domain style + system fallback
-    return NextResponse.json({ error: "Gagal memproses. Error 500 — coba lagi dalam beberapa detik." }, { status: 500 });
+    console.error("OPTIMIZE ERROR", e?.message, e?.stack);
+    return NextResponse.json({ error: `Gagal memproses: ${e?.message ?? "unknown"} coba lagi` }, { status: 500 });
   }
 }
