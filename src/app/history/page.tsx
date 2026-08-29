@@ -77,11 +77,7 @@ export default function HistoryPage() {
           ))}
         </div>
       )}
-      <div className="mt-8 rounded-xl bg-[var(--muted)] p-4 text-xs leading-5 text-[var(--forge-muted)]">
-        <div className="font-semibold text-[var(--foreground)]">Cara pakai database biar tidak hilang</div>
-        <div className="mt-1">Lokal: otomatis tersimpan di file <span className="font-mono">data/history.json</span> jadi tetap ada meski clear browser</div>
-        <div>Supabase untuk deploy: buat project di supabase.com lalu buat tabel <span className="font-mono">prompts</span> dengan kolom title text, original_prompt text, optimized_prompt text, category text, score int, created_at timestamp. Isi env <span className="font-mono">NEXT_PUBLIC_SUPABASE_URL</span> dan <span className="font-mono">SUPABASE_SERVICE_ROLE_KEY</span> di Vercel lalu history otomatis pakai Supabase</div>
-      </div>
+
     </div>
   );
 }

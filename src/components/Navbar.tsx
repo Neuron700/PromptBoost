@@ -14,12 +14,18 @@ export default function Navbar() {
   const pathname = usePathname();
   const [dark, setDark] = useState(false);
   const [open, setOpen] = useState(false);
+  const [userEmail, setUserEmail] = useState<string | null>(null);
 
   useEffect(() => {
     const saved = localStorage.getItem("forge-theme");
     const isDark = saved ? saved === "dark" : window.matchMedia("(prefers-color-scheme: dark)").matches;
     setDark(isDark);
     document.documentElement.classList.toggle("dark", isDark);
+    import("@/lib/supabase/client").then(({ createClient }) => {
+      const supabase = createClient();
+      supabase.auth.getUser().then(({ data }) => setUserEmail(data.user?.email ?? null));
+      supabase.auth.onAuthStateChange((_e, session) => setUserEmail(session?.user?.email ?? null));
+    });
   }, []);
 
   const toggle = () => {
@@ -48,6 +54,12 @@ export default function Navbar() {
         </nav>
 
         <div className="flex items-center gap-2">
+          {userEmail ? (
+            <span className="hidden sm:inline text-xs font-mono px-2 py-1 rounded-full bg-[var(--muted)] border border-[var(--border)] max-w-[140px] truncate">{userEmail}</span>
+          ) : null}
+          <Link href="/auth" className={`hidden sm:inline-flex h-8 px-3 rounded-full border text-xs font-medium items-center ${userEmail ? "border-[var(--border)] bg-[var(--card)]" : "bg-[var(--forge-ink)] dark:bg-white text-white dark:text-black border-transparent"}`}>
+            {userEmail ? "Akun" : "Masuk"}
+          </Link>
           <button onClick={toggle} aria-label="Toggle theme" className="w-8 h-8 grid place-items-center rounded-full border border-[var(--border)] hover:bg-[var(--muted)] transition-colors">
             {dark ? <Sun size={14} /> : <Moon size={14} />}
           </button>
@@ -64,6 +76,7 @@ export default function Navbar() {
           {nav.map((n) => (
             <Link key={n.href} href={n.href} onClick={() => setOpen(false)} className={`px-3 py-2 rounded-lg text-sm ${pathname === n.href ? "bg-[var(--muted)] font-medium" : ""}`}>{n.label}</Link>
           ))}
+          <Link href="/auth" onClick={() => setOpen(false)} className="px-3 py-2 rounded-lg text-sm border border-[var(--border)] text-center">{userEmail ? userEmail : "Masuk / Daftar"}</Link>
           <Link href="/optimizer" onClick={() => setOpen(false)} className="mt-2 h-9 grid place-items-center rounded-full bg-[var(--forge-ember)] text-white text-sm font-medium">Start Building</Link>
         </div>
       )}
