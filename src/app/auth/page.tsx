@@ -52,6 +52,9 @@ export default function AuthPage() {
     if (m.includes("Email not confirmed")) {
       return "Email belum verifikasi. Matikan Confirm email di Supabase Auth agar bisa langsung masuk.";
     }
+    if (m.toLowerCase().includes("rate limit") || m.includes("over_email_send_rate_limit")) {
+      return "Limit email tercapai karena terlalu sering klik Daftar atau Kirim ulang. Tunggu sekitar 1 jam, atau matikan Confirm email di Supabase biar tidak perlu kode sama sekali. Akun kamu kemungkinan sudah terdaftar, coba langsung klik Masuk.";
+    }
     if (m.includes("Invalid login credentials")) {
       return "Email atau password salah. Kalau belum punya akun klik Daftar dulu.";
     }
@@ -83,13 +86,23 @@ export default function AuthPage() {
     setUserEmail(null);
     setMsg("Keluar berhasil");
   };
+  const [cooldown, setCooldown] = useState(0);
+  useEffect(() => {
+    if (cooldown <= 0) return;
+    const t = setTimeout(() => setCooldown((c) => c - 1), 1000);
+    return () => clearTimeout(t);
+  }, [cooldown]);
   const resend = async () => {
     if (!email.includes("@")) { setMsg("Isi email dulu baru klik kirim ulang."); return; }
+    if (cooldown > 0) return;
     setLoading(true); setMsg(null);
     try {
       const { error } = await supabase.auth.resend({ type: "signup", email });
       if (error) setMsg(friendlyError(error));
-      else setMsg("Kode dikirim ulang. Cek inbox, folder SPAM, dan tab Promotions. Kalau 2 menit tidak masuk, matikan Confirm email di Supabase.");
+      else {
+        setMsg("Kode dikirim ulang. Cek inbox, folder SPAM, dan tab Promotions. Kalau 2 menit tidak masuk, matikan Confirm email di Supabase.");
+        setCooldown(60);
+      }
     } catch (e: any) { setMsg(friendlyError(e)); }
     setLoading(false);
   };
@@ -168,8 +181,8 @@ export default function AuthPage() {
           <button type="button" onClick={register} disabled={loading} className="flex-1 h-11 rounded-full border border-[var(--border)] text-sm font-medium min-h-[48px]">Daftar</button>
         </div>
         {msg && <div className="mt-3 text-xs bg-[var(--muted)] rounded-lg p-2 whitespace-pre-wrap">{msg}</div>}
-        <button type="button" onClick={resend} disabled={loading} className="mt-2 w-full h-9 rounded-full border border-dashed border-[var(--border)] text-xs text-[var(--forge-muted)] hover:text-[var(--foreground)]">
-          Kode tidak masuk? Kirim ulang email
+        <button type="button" onClick={resend} disabled={loading || cooldown > 0} className="mt-2 w-full h-9 rounded-full border border-dashed border-[var(--border)] text-xs text-[var(--forge-muted)] hover:text-[var(--foreground)] disabled:opacity-50">
+          {cooldown > 0 ? `Tunggu ${cooldown} detik sebelum kirim ulang` : "Kode tidak masuk? Kirim ulang email"}
         </button>
         <div className="mt-3 text-xs text-[var(--forge-muted)]">Belum punya akun? Isi email dan password lalu klik Daftar. Sudah punya? Klik Masuk. Password tidak disimpan, yang diingat hanya email biar aman.</div>
       </form>
