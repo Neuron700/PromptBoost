@@ -24,6 +24,11 @@ export default function AuthPage() {
       const savedRemember = localStorage.getItem("forge-remember");
       if (savedEmail) setEmail(savedEmail);
       if (savedRemember !== null) setRemember(savedRemember === "1");
+      const q = new URLSearchParams(window.location.search);
+      const err = q.get("error") || q.get("error_code") || "";
+      if (err.includes("otp_expired") || err.includes("access_denied")) {
+        setMsg("Link verifikasi expired atau sudah dipakai. Link hanya berlaku 1 jam dan sekali pakai. Klik Kirim ulang email lalu buka link terbaru.");
+      }
     } catch {}
   }, []);
 
