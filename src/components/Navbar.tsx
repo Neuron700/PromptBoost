@@ -75,9 +75,9 @@ export default function Navbar() {
       {open && (
         <div className="md:hidden border-t border-[var(--border)] bg-[var(--card)] px-4 py-3 flex flex-col gap-1">
           {nav.map((n) => (
-            <Link key={n.href} href={n.href} onClick={() => setOpen(false)} className={`px-3 py-2 rounded-lg text-sm ${pathname === n.href ? "bg-[var(--muted)] font-medium" : ""}`}>{n.label}</Link>
+            <Link key={n.href} href={n.href} onClick={() => setOpen(false)} className={`px-3 py-2.5 rounded-lg text-sm min-h-[44px] flex items-center ${pathname === n.href ? "bg-[var(--muted)] font-medium" : ""}`}>{n.label}</Link>
           ))}
-          <Link href="/auth" onClick={() => setOpen(false)} className="px-3 py-2 rounded-lg text-sm border border-[var(--border)] text-center">{userEmail ? userEmail : "Masuk / Daftar"}</Link>
+          <Link href="/auth" onClick={() => setOpen(false)} className="px-3 py-2.5 rounded-lg text-sm border border-[var(--border)] text-center truncate min-h-[44px] flex items-center justify-center">{userEmail ? userEmail : "Masuk / Daftar"}</Link>
           <Link href="/optimizer" onClick={() => setOpen(false)} className="mt-2 h-9 grid place-items-center rounded-full bg-[var(--forge-ember)] text-white text-sm font-medium">Start Building</Link>
         </div>
       )}

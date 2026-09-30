@@ -22,35 +22,35 @@ export default function FeedbackPage() {
   };
 
   return (
-    <div className="mx-auto max-w-[640px] px-4 py-8 flex-1 w-full">
-      <div className="rounded-2xl border border-[var(--border)] bg-[var(--card)] p-6">
-        <h1 className="text-xl font-semibold">Feedback untuk PromptForge</h1>
-        <p className="text-xs text-[var(--forge-muted)] mt-1">Saran kamu akan dikirim langsung ke <span className="font-mono font-medium text-[var(--foreground)]">syahlanbudi73@gmail.com</span></p>
+    <div className="mx-auto max-w-[640px] px-4 py-6 sm:py-8 flex-1 w-full">
+      <div className="rounded-2xl border border-[var(--border)] bg-[var(--card)] p-4 sm:p-6">
+        <h1 className="text-lg sm:text-xl font-semibold">Feedback untuk PromptForge</h1>
+        <p className="text-xs text-[var(--forge-muted)] mt-1">Saran kamu akan dikirim langsung ke <span className="font-mono font-medium text-[var(--foreground)] break-all">syahlanbudi73@gmail.com</span></p>
 
         <label className="block mt-4 text-xs font-medium">Nama
-          <input value={name} onChange={e=>setName(e.target.value)} placeholder="Nama kamu" className="mt-1 w-full h-10 rounded-xl border border-[var(--border)] bg-[var(--background)] px-3 text-sm" />
+          <input value={name} onChange={e=>setName(e.target.value)} placeholder="Nama kamu" autoComplete="name" className="mt-1 w-full h-11 rounded-xl border border-[var(--border)] bg-[var(--background)] px-3 text-[16px] sm:text-sm" />
         </label>
         <label className="block mt-3 text-xs font-medium">Email kamu
-          <input value={email} onChange={e=>setEmail(e.target.value)} placeholder="kamu@mail.com" className="mt-1 w-full h-10 rounded-xl border border-[var(--border)] bg-[var(--background)] px-3 text-sm" />
+          <input value={email} onChange={e=>setEmail(e.target.value)} placeholder="kamu@mail.com" type="email" autoComplete="email" className="mt-1 w-full h-11 rounded-xl border border-[var(--border)] bg-[var(--background)] px-3 text-[16px] sm:text-sm" />
         </label>
         <label className="block mt-3 text-xs font-medium">Rating
-          <div className="mt-1 flex gap-1">
+          <div className="mt-1 flex gap-2">
             {[1,2,3,4,5].map(n=>(
-              <button key={n} type="button" onClick={()=>setRating(n)} className={`w-8 h-8 rounded-full border text-sm ${rating>=n ? "bg-[var(--forge-ember)] text-white border-transparent" : "bg-[var(--card)] border-[var(--border)]"}`}>{n}</button>
+              <button key={n} type="button" onClick={()=>setRating(n)} aria-label={`Rating ${n}`} className={`w-11 h-11 sm:w-9 sm:h-9 rounded-full border text-sm shrink-0 ${rating>=n ? "bg-[var(--forge-ember)] text-white border-transparent" : "bg-[var(--card)] border-[var(--border)]"}`}>{n}</button>
             ))}
           </div>
         </label>
         <label className="block mt-3 text-xs font-medium">Pesan
-          <textarea value={message} onChange={e=>setMessage(e.target.value)} placeholder="Tulis saran, bug, atau ide fitur..." className="mt-1 w-full min-h-[120px] rounded-xl border border-[var(--border)] bg-[var(--background)] p-3 text-sm" />
+          <textarea value={message} onChange={e=>setMessage(e.target.value)} placeholder="Tulis saran, bug, atau ide fitur..." className="mt-1 w-full min-h-[120px] rounded-xl border border-[var(--border)] bg-[var(--background)] p-3 text-[16px] sm:text-sm" />
         </label>
 
-        <button onClick={submit} disabled={loading} className="mt-4 w-full h-10 rounded-full bg-[var(--forge-ember)] text-white text-sm font-medium disabled:opacity-50">
+        <button onClick={submit} disabled={loading} className="mt-4 w-full h-12 sm:h-11 rounded-full bg-[var(--forge-ember)] text-white text-[15px] sm:text-sm font-medium disabled:opacity-50 min-h-[48px]">
           {loading ? "Mengirim..." : "Kirim Feedback"}
         </button>
         {status && <div className="mt-3 rounded-xl bg-[var(--muted)] p-3 text-xs">{status}</div>}
 
-        <div className="mt-6 rounded-xl bg-[var(--muted)] p-3 text-xs leading-5 text-[var(--forge-muted)]">
-          Atau hubungi langsung via email: <a href="mailto:syahlanbudi73@gmail.com?subject=Feedback%20PromptForge" className="underline font-medium text-[var(--foreground)]">syahlanbudi73@gmail.com</a>
+        <div className="mt-6 rounded-xl bg-[var(--muted)] p-3 text-xs leading-5 text-[var(--forge-muted)] break-words">
+          Atau hubungi langsung via email: <a href="mailto:syahlanbudi73@gmail.com?subject=Feedback%20PromptForge" className="underline font-medium text-[var(--foreground)] break-all">syahlanbudi73@gmail.com</a>
         </div>
       </div>
     </div>

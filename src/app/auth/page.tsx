@@ -181,7 +181,7 @@ export default function AuthPage() {
           <button type="button" onClick={register} disabled={loading} className="flex-1 h-11 rounded-full border border-[var(--border)] text-sm font-medium min-h-[48px]">Daftar</button>
         </div>
         {msg && <div className="mt-3 text-xs bg-[var(--muted)] rounded-lg p-2 whitespace-pre-wrap">{msg}</div>}
-        <button type="button" onClick={resend} disabled={loading || cooldown > 0} className="mt-2 w-full h-9 rounded-full border border-dashed border-[var(--border)] text-xs text-[var(--forge-muted)] hover:text-[var(--foreground)] disabled:opacity-50">
+        <button type="button" onClick={resend} disabled={loading || cooldown > 0} className="mt-2 w-full min-h-[44px] py-2 px-3 rounded-full border border-dashed border-[var(--border)] text-xs text-[var(--forge-muted)] hover:text-[var(--foreground)] disabled:opacity-50">
           {cooldown > 0 ? `Tunggu ${cooldown} detik sebelum kirim ulang` : "Kode tidak masuk? Kirim ulang email"}
         </button>
         <div className="mt-3 text-xs text-[var(--forge-muted)]">Belum punya akun? Isi email dan password lalu klik Daftar. Sudah punya? Klik Masuk. Password tidak disimpan, yang diingat hanya email biar aman.</div>
