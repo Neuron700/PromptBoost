@@ -19,7 +19,14 @@ export async function middleware(request: NextRequest) {
       },
     }
   );
-  const { data: { user } } = await supabase.auth.getUser();
+  let user = null;
+  try {
+    const { data } = await supabase.auth.getUser();
+    user = data.user;
+  } catch {
+    // Supabase down atau URL salah, jangan bikin 500, biarkan lewat agar halaman auth bisa tampilkan pesan jelas
+    return supabaseResponse;
+  }
   const path = request.nextUrl.pathname;
 
   const isPublic = publicPaths.some((p) => path.startsWith(p)) || path.startsWith("/_next") || path.startsWith("/api") || path === "/favicon.ico" || path === "/icon.svg" || path.startsWith("/icon");

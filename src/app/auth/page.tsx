@@ -16,18 +16,38 @@ export default function AuthPage() {
   };
   useEffect(() => { refresh(); }, []);
 
+  const friendlyError = (e: any) => {
+    const m = String(e?.message ?? e ?? "");
+    if (m.includes("Failed to fetch") || m.includes("fetch failed") || m.includes("ENOTFOUND")) {
+      return "Tidak bisa hubungi database Supabase. Project kemungkinan paused atau URL salah. Cek dashboard Supabase lalu Restore project.";
+    }
+    if (m.includes("Email not confirmed")) {
+      return "Email belum verifikasi. Matikan Confirm email di Supabase Auth agar bisa langsung masuk.";
+    }
+    if (m.includes("Invalid login credentials")) {
+      return "Email atau password salah. Kalau belum punya akun klik Daftar dulu.";
+    }
+    return m || "Terjadi kesalahan. Coba lagi.";
+  };
+
   const login = async () => {
+    if (!email.includes("@") || password.length < 6) { setMsg("Isi email valid dan password minimal 6 karakter dulu."); return; }
     setLoading(true); setMsg(null);
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
-    if (error) setMsg(error.message);
-    else { setMsg("Login berhasil"); refresh(); }
+    try {
+      const { error } = await supabase.auth.signInWithPassword({ email, password });
+      if (error) setMsg(friendlyError(error));
+      else { setMsg("Login berhasil"); refresh(); }
+    } catch (e: any) { setMsg(friendlyError(e)); }
     setLoading(false);
   };
   const register = async () => {
+    if (!email.includes("@") || password.length < 6) { setMsg("Isi email valid dan password minimal 6 karakter dulu."); return; }
     setLoading(true); setMsg(null);
-    const { error } = await supabase.auth.signUp({ email, password });
-    if (error) setMsg(error.message);
-    else setMsg("Akun dibuat. Cek email kalau perlu verifikasi, lalu login.");
+    try {
+      const { error } = await supabase.auth.signUp({ email, password });
+      if (error) setMsg(friendlyError(error));
+      else setMsg("Akun dibuat. Kalau diminta verifikasi cek inbox, atau matikan Confirm email di Supabase biar langsung bisa Masuk.");
+    } catch (e: any) { setMsg(friendlyError(e)); }
     setLoading(false);
   };
   const logout = async () => {
