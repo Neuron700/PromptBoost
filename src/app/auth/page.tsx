@@ -78,6 +78,16 @@ export default function AuthPage() {
     setUserEmail(null);
     setMsg("Keluar berhasil");
   };
+  const resend = async () => {
+    if (!email.includes("@")) { setMsg("Isi email dulu baru klik kirim ulang."); return; }
+    setLoading(true); setMsg(null);
+    try {
+      const { error } = await supabase.auth.resend({ type: "signup", email });
+      if (error) setMsg(friendlyError(error));
+      else setMsg("Kode dikirim ulang. Cek inbox, folder SPAM, dan tab Promotions. Kalau 2 menit tidak masuk, matikan Confirm email di Supabase.");
+    } catch (e: any) { setMsg(friendlyError(e)); }
+    setLoading(false);
+  };
 
   if (userEmail) {
     return (
@@ -153,6 +163,9 @@ export default function AuthPage() {
           <button type="button" onClick={register} disabled={loading} className="flex-1 h-11 rounded-full border border-[var(--border)] text-sm font-medium min-h-[48px]">Daftar</button>
         </div>
         {msg && <div className="mt-3 text-xs bg-[var(--muted)] rounded-lg p-2 whitespace-pre-wrap">{msg}</div>}
+        <button type="button" onClick={resend} disabled={loading} className="mt-2 w-full h-9 rounded-full border border-dashed border-[var(--border)] text-xs text-[var(--forge-muted)] hover:text-[var(--foreground)]">
+          Kode tidak masuk? Kirim ulang email
+        </button>
         <div className="mt-3 text-xs text-[var(--forge-muted)]">Belum punya akun? Isi email dan password lalu klik Daftar. Sudah punya? Klik Masuk. Password tidak disimpan, yang diingat hanya email biar aman.</div>
       </form>
     </div>
