@@ -42,6 +42,8 @@ export async function GET() {
           category: d.category ?? "general",
           score: d.score ?? 0,
           createdAt: d.created_at ?? new Date().toISOString(),
+          stages: d.stages ?? undefined,
+          tags: d.tags ?? undefined,
         })));
       }
     }
@@ -66,23 +68,34 @@ export async function POST(req: NextRequest) {
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
     if (user) {
-      const { error } = await supabase.from("prompt_history").insert({
+      const row: any = {
         user_id: user.id,
         raw_prompt: item.original,
         optimized_prompt: item.optimized,
         category: item.category,
         score: item.score,
         title: item.title,
-      });
+      };
+      if (Array.isArray((body as any).stages)) row.stages = (body as any).stages;
+      if (Array.isArray((body as any).tags)) row.tags = (body as any).tags;
+      const { error } = await supabase.from("prompt_history").insert(row);
       if (error) {
-        // fallback jika kolom title belum ada
-        await supabase.from("prompt_history").insert({
+        // fallback jika kolom title stages tags belum ada
+        const slim: any = {
           user_id: user.id,
           raw_prompt: item.original,
           optimized_prompt: item.optimized,
           category: item.category,
           score: item.score,
-        });
+        };
+        let e2: unknown = null;
+        try {
+          const r = await supabase.from("prompt_history").insert({ ...slim, title: item.title });
+          e2 = r.error;
+        } catch { e2 = "err"; }
+        if (e2) {
+          try { await supabase.from("prompt_history").insert(slim); } catch {}
+        }
       }
       return NextResponse.json(item);
     }

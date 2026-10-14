@@ -1,9 +1,11 @@
 "use client";
 import { useEffect, useState } from "react";
-import type { Category, OutputMode, OptimizeResponse, HistoryItem } from "@/types/prompt";
+import type { Category, OutputMode, OptimizeResponse, HistoryItem, SpiderStage, WordTag } from "@/types/prompt";
+import { heuristicStages, heuristicTags } from "@/lib/ai";
 import CategorySelector from "@/components/CategorySelector";
 import CopyButton from "@/components/CopyButton";
 import ForgeRail from "@/components/ForgeRail";
+import SpiderPanel from "@/components/SpiderPanel";
 import { ScoreRing, AnalysisBars } from "@/components/ScoreCard";
 import { Hammer, RotateCcw, Sparkles, AlertCircle, History as HistoryIcon } from "lucide-react";
 
@@ -18,25 +20,40 @@ export default function OptimizerPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<OptimizeResponse | null>(null);
+  const [spiderStages, setSpiderStages] = useState<SpiderStage[] | null>(null);
+  const [spiderTags, setSpiderTags] = useState<WordTag[] | null>(null);
+  const [spiderKey, setSpiderKey] = useState("");
+  const [spiderNotice, setSpiderNotice] = useState<string | null>(null);
 
   const optimize = async () => {
     if (!prompt.trim()) { setError("Prompt kosong. Tulis ide mentah terlebih dahulu."); return; }
-    setLoading(true); setError(null);
+    setLoading(true); setError(null); setSpiderNotice(null);
+    setSpiderTags(heuristicTags(prompt));
+    const idleStages = heuristicStages(prompt, category);
+    for (const s of idleStages) s.status = "idle";
+    setSpiderStages(idleStages);
+    setSpiderKey(String(Date.now()));
     try {
       const res = await fetch("/api/optimize", { method:"POST", headers:{ "Content-Type":"application/json" }, body: JSON.stringify({ prompt, category, outputMode: mode }) });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Gagal memproses. Error 500 coba lagi.");
       setResult(data);
-      const item: HistoryItem = { id: Date.now().toString(), title: prompt.slice(0,48), original: prompt, optimized: data.optimizedPrompt, category, score: data.score, createdAt: new Date().toISOString() };
+      setSpiderTags(data.tags ?? heuristicTags(prompt));
+      setSpiderStages(data.stages ?? heuristicStages(prompt, category));
+      const item: HistoryItem = { id: Date.now().toString(), title: prompt.slice(0,48), original: prompt, optimized: data.optimizedPrompt, category, score: data.score, createdAt: new Date().toISOString(), stages: data.stages ?? undefined, tags: data.tags ?? undefined };
       const prev = JSON.parse(localStorage.getItem("forge-history") || "[]");
       localStorage.setItem("forge-history", JSON.stringify([item, ...prev].slice(0,50)));
       // simpan ke database biar tidak hilang
       fetch("/api/history", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(item) }).catch(()=>{});
-    } catch (e:any) { setError(e.message); }
+    } catch (e:any) {
+      setError(e.message);
+      setSpiderStages(heuristicStages(prompt, category));
+      setSpiderNotice("AI gagal dihubungi, spider tampil dari analisis lokal");
+    }
     finally { setLoading(false); }
   };
 
-  const reset = () => { setPrompt(""); setResult(null); setError(null); };
+  const reset = () => { setPrompt(""); setResult(null); setError(null); setSpiderTags(null); setSpiderStages(null); setSpiderNotice(null); };
 
   return (
     <div className="mx-auto max-w-[1160px] px-4 sm:px-6 py-6 sm:py-8 flex-1 w-full">
@@ -159,6 +176,18 @@ export default function OptimizerPage() {
           )}
         </section>
       </div>
+
+      {(spiderTags || loading) && (
+        <SpiderPanel
+          loading={loading}
+          stages={spiderStages}
+          tags={spiderTags}
+          dataKey={spiderKey}
+          before={result?.beforeScore ?? null}
+          after={result?.score ?? null}
+          notice={spiderNotice}
+        />
+      )}
     </div>
   );
 }
