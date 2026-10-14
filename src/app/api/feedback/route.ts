@@ -1,9 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import fs from "fs";
 import path from "path";
+import nodemailer from "nodemailer";
 import { createClient } from "@/lib/supabase/server";
 
 const filePath = path.join(process.cwd(), "data", "feedback.json");
+const TARGET = "syahlanbudi73@gmail.com";
 
 export async function POST(req: NextRequest) {
   try {
@@ -16,12 +18,12 @@ export async function POST(req: NextRequest) {
 
     const entry = {
       id: String(Date.now()),
-      name: name.slice(0,60),
-      email: email.slice(0,80),
-      message: message.slice(0,2000),
+      name: name.slice(0, 60),
+      email: email.slice(0, 80),
+      message: message.slice(0, 2000),
       rating: Number(body.rating ?? 0),
       createdAt: new Date().toISOString(),
-      target: "syahlanbudi73@gmail.com",
+      target: TARGET,
     };
 
     // simpan ke supabase jika ada tabel feedback (abaikan error jika tabel belum ada)
@@ -40,14 +42,37 @@ export async function POST(req: NextRequest) {
       const arr = fs.existsSync(filePath) ? JSON.parse(fs.readFileSync(filePath, "utf8")) : [];
       arr.unshift(entry);
       fs.mkdirSync(path.dirname(filePath), { recursive: true });
-      fs.writeFileSync(filePath, JSON.stringify(arr.slice(0,200), null, 2), "utf8");
+      fs.writeFileSync(filePath, JSON.stringify(arr.slice(0, 200), null, 2), "utf8");
     } catch {}
 
-    // di sini bisa kirim email ke syahlanbudi73@gmail.com pakai Resend/Nodemailer kalau sudah setup
-    // untuk sekarang kita log dan anggap terkirim
+    // kirim email beneran via Gmail SMTP kalau sudah dikonfigurasi
+    const smtpUser = process.env.FEEDBACK_SMTP_USER || TARGET;
+    const smtpPass = (process.env.FEEDBACK_SMTP_PASS || "").replace(/\s/g, "");
+    if (!smtpPass) {
+      return NextResponse.json({ ok: true, stored: true, emailSent: false, message: "Feedback tersimpan, tapi email belum aktif. Pasang FEEDBACK_SMTP_PASS agar masuk inbox." });
+    }
 
-    return NextResponse.json({ ok: true, message: "Feedback terkirim ke syahlanbudi73@gmail.com. Terima kasih!" });
-  } catch (e:any) {
+    try {
+      const transporter = nodemailer.createTransport({
+        host: "smtp.gmail.com",
+        port: 465,
+        secure: true,
+        auth: { user: smtpUser, pass: smtpPass },
+      });
+      await transporter.sendMail({
+        from: `PromptForge Feedback <${smtpUser}>`,
+        to: TARGET,
+        replyTo: entry.email,
+        subject: `Feedback PromptForge rating ${entry.rating} dari ${entry.name || entry.email}`,
+        text: `Nama: ${entry.name || "-"}\nEmail: ${entry.email}\nRating: ${entry.rating}/5\nWaktu: ${entry.createdAt}\n\nPesan:\n${entry.message}`,
+      });
+    } catch (e: any) {
+      console.error("FEEDBACK SMTP ERROR", e?.message);
+      return NextResponse.json({ ok: true, stored: true, emailSent: false, message: "Feedback tersimpan tapi email gagal terkirim. Cek App Password Gmail." });
+    }
+
+    return NextResponse.json({ ok: true, stored: true, emailSent: true, message: `Feedback terkirim ke ${TARGET}. Terima kasih!` });
+  } catch (e: any) {
     return NextResponse.json({ error: "Gagal kirim feedback" }, { status: 500 });
   }
 }
