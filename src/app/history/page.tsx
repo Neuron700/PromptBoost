@@ -65,7 +65,7 @@ export default function HistoryPage() {
                 </div>
                 <div className="mt-2 font-medium text-sm truncate">{it.title}</div>
                 {it.tags && it.tags.length > 0 && (
-                  <div className="mt-1.5 text-[11px] font-mono tracking-widest text-[var(--forge-muted)]">SPIDER {it.stages?.length ?? 6} TAHAP • {it.tags.length} KATA</div>
+                  <div className="mt-1.5 text-[11px] font-mono tracking-widest text-[var(--forge-muted)]">CRAWLER {it.stages?.length ?? 6} TAHAP • {it.tags.length} KATA</div>
                 )}
                 <div className="mt-2 grid sm:grid-cols-2 gap-2">
                   <div className="rounded-lg bg-[var(--muted)] p-2 text-xs leading-4 line-clamp-3 whitespace-pre-wrap">{it.original}</div>

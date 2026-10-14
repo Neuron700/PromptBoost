@@ -132,5 +132,5 @@ export default function ForceCanvas({ tags, dataKey, activeIndex, selectedIndex,
     try { fgRef.current?.refresh?.(); } catch {}
   }, [activeIndex, selectedIndex]);
 
-  return <div ref={ref} className="absolute inset-0" aria-hidden={false} role="img" aria-label="Grafik spider kata prompt" />;
+  return <div ref={ref} className="absolute inset-0" aria-hidden={false} role="img" aria-label="Grafik crawler kata prompt" />;
 }

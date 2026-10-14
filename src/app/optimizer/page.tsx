@@ -48,7 +48,7 @@ export default function OptimizerPage() {
     } catch (e:any) {
       setError(e.message);
       setSpiderStages(heuristicStages(prompt, category));
-      setSpiderNotice("AI gagal dihubungi, spider tampil dari analisis lokal");
+      setSpiderNotice("AI gagal dihubungi, crawler tampil dari analisis lokal");
     }
     finally { setLoading(false); }
   };

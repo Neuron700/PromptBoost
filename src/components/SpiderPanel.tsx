@@ -93,9 +93,9 @@ export default function SpiderPanel({ loading, stages, tags, dataKey, before, af
   if (!tags || tags.length === 0) return null;
 
   return (
-    <section aria-label="Spider analysis" className="mt-4 rounded-2xl border border-[var(--border)] bg-[var(--card)] p-4 sm:p-5 min-w-0">
+    <section aria-label="Crawler analysis" className="mt-4 rounded-2xl border border-[var(--border)] bg-[var(--card)] p-4 sm:p-5 min-w-0">
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <div className="font-mono text-[11px] tracking-[0.14em] text-[var(--forge-muted)]">SPIDER ANALYSIS</div>
+        <div className="font-mono text-[11px] tracking-[0.14em] text-[var(--forge-muted)]">CRAWLER ANALYSIS</div>
         <div className="flex items-center gap-3 text-[11px] text-[var(--forge-muted)] flex-wrap">
           {Object.entries(TAG_LABEL).map(([k, label]) => (
             <span key={k} className="inline-flex items-center gap-1.5">
