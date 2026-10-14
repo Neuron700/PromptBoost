@@ -148,7 +148,7 @@ export default function SpiderPanel({ loading, stages, tags, dataKey, before, af
           <div className="absolute bottom-2 left-2 right-2 rounded-xl bg-[var(--card)] border border-[var(--border)] p-3 shadow-lg">
             <div className="flex items-center gap-2">
               <span className="font-mono text-sm font-bold truncate">{selected.word}</span>
-              <span className="text-[10px] font-mono tracking-widest px-2 py-0.5 rounded-full text-white shrink-0" style={{ background: `var(${TAG_VAR[selected.tag]})` }}>
+              <span className="text-[10px] font-mono tracking-widest px-2 py-0.5 rounded-full text-[var(--forge-paper)] shrink-0" style={{ background: `var(${TAG_VAR[selected.tag]})` }}>
                 {TAG_LABEL[selected.tag]}
               </span>
               <button type="button" onClick={() => setSelected(null)} aria-label="Tutup" className="ml-auto w-7 h-7 grid place-items-center rounded-full border border-[var(--border)] shrink-0">

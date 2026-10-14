@@ -92,12 +92,19 @@ export default function ForceCanvas({ tags, dataKey, activeIndex, selectedIndex,
             ctx.arc(node.x, node.y, r + 5, 0, 2 * Math.PI, false);
             ctx.stroke();
             ctx.restore();
-          } else if (node.word.length > 3) {
-            const fs = Math.max(2.5, 10 / globalScale);
+            const fsHub = Math.max(3, 11 / globalScale);
+            ctx.save();
+            ctx.font = `bold ${fsHub}px monospace`;
+            ctx.fillStyle = color;
+            ctx.globalAlpha = 0.9;
+            ctx.fillText("PROMPT", node.x + r + 7, node.y + fsHub / 3);
+            ctx.restore();
+          } else {
+            const fs = Math.max(2.2, (node.word.length <= 3 ? 7 : 10) / globalScale);
             ctx.save();
             ctx.font = `${fs}px monospace`;
             ctx.fillStyle = color;
-            ctx.globalAlpha = isActive || isSel ? 1 : 0.75;
+            ctx.globalAlpha = isActive || isSel ? 1 : 0.85;
             ctx.fillText(node.word.slice(0, 18), node.x + r + 2, node.y + fs / 3);
             ctx.restore();
           }
@@ -108,6 +115,10 @@ export default function ForceCanvas({ tags, dataKey, activeIndex, selectedIndex,
         })
         .onBackgroundClick(() => stateRef.current.onSelect(null));
       fgRef.current = fg;
+      const fitTimer = setTimeout(() => {
+        try { fg.zoomToFit(600, 70); } catch {}
+      }, 900);
+      (fg as any).__fitTimer = fitTimer;
       document.addEventListener("visibilitychange", onVis);
       if (ref.current && typeof ResizeObserver !== "undefined") {
         ro = new ResizeObserver(() => {
@@ -122,6 +133,7 @@ export default function ForceCanvas({ tags, dataKey, activeIndex, selectedIndex,
       alive = false;
       document.removeEventListener("visibilitychange", onVis);
       try { ro?.disconnect(); } catch {}
+      try { clearTimeout(fg?.__fitTimer); } catch {}
       try { fg?._destructor?.(); } catch {}
       try { if (ref.current) ref.current.innerHTML = ""; } catch {}
       fgRef.current = null;
