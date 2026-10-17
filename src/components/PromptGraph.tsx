@@ -535,6 +535,10 @@ export default function PromptGraph({ success = false }: PromptGraphProps) {
       py = -9999;
     };
 
+    const onAuthSuccess = () => {
+      burst = 1;
+    };
+
     const onVisibility = () => {
       if (document.hidden) {
         live = false;
@@ -555,6 +559,7 @@ export default function PromptGraph({ success = false }: PromptGraphProps) {
     window.addEventListener("pointermove", onPointerMove, { passive: true });
     window.addEventListener("resize", onResize);
     window.addEventListener("blur", onLeave);
+    window.addEventListener("forge:auth-success", onAuthSuccess);
     document.addEventListener("pointerleave", onLeave);
     document.addEventListener("visibilitychange", onVisibility);
 
@@ -574,6 +579,7 @@ export default function PromptGraph({ success = false }: PromptGraphProps) {
       window.removeEventListener("pointermove", onPointerMove);
       window.removeEventListener("resize", onResize);
       window.removeEventListener("blur", onLeave);
+      window.removeEventListener("forge:auth-success", onAuthSuccess);
       document.removeEventListener("pointerleave", onLeave);
       document.removeEventListener("visibilitychange", onVisibility);
     };

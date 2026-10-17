@@ -29,7 +29,7 @@ export async function middleware(request: NextRequest) {
   }
   const path = request.nextUrl.pathname;
 
-  const isPublic = publicPaths.some((p) => path.startsWith(p)) || path.startsWith("/_next") || path.startsWith("/api") || path.startsWith("/video") || path === "/favicon.ico" || path === "/icon.svg" || path.startsWith("/icon");
+  const isPublic = path === "/" || publicPaths.some((p) => path.startsWith(p)) || path.startsWith("/_next") || path.startsWith("/api") || path.startsWith("/video") || path === "/favicon.ico" || path === "/icon.svg" || path.startsWith("/icon");
 
   if (!user && !isPublic) {
     const url = request.nextUrl.clone();

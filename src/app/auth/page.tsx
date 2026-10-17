@@ -3,7 +3,6 @@ import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import { AlertCircle, ArrowRight, Check, Circle, Eye, EyeOff, Loader2 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
-import PromptGraph from "@/components/PromptGraph";
 
 function GoogleMark() {
   return (
@@ -171,7 +170,7 @@ export default function AuthPage() {
     try {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: "google",
-        options: { redirectTo: `${window.location.origin}/auth/callback?next=/optimizer` },
+        options: { redirectTo: `${window.location.origin}/auth/callback?next=/` },
       });
       if (error) {
         notify(friendlyError(error), "error");
@@ -207,8 +206,11 @@ export default function AuthPage() {
           persistEmail(email, remember);
           setLoading(false);
           setSuccess(email);
+          try {
+            window.dispatchEvent(new Event("forge:auth-success"));
+          } catch {}
           window.setTimeout(() => {
-            router.push("/optimizer");
+            router.push("/");
             router.refresh();
           }, 1150);
           return;
@@ -260,7 +262,6 @@ export default function AuthPage() {
   if (success) {
     return (
       <div className="flex-1">
-        <PromptGraph success />
         <div className="mx-auto max-w-[460px] px-4 py-10 sm:py-14">
           <div className="rounded-2xl border border-[var(--forge-signal)] bg-[var(--card)]/80 backdrop-blur-md p-8 text-center forge-pop">
             <span className="mx-auto grid h-14 w-14 place-items-center rounded-full bg-[var(--forge-signal)] text-white">
@@ -270,7 +271,7 @@ export default function AuthPage() {
             <div className="mt-1 font-mono text-xs break-all text-[var(--forge-muted)]">{success}</div>
             <div className="mt-4 inline-flex items-center gap-2 text-xs text-[var(--forge-muted)]">
               <Loader2 size={13} className="animate-spin" aria-hidden />
-              Membuka Optimizer
+              Membuka beranda
             </div>
           </div>
         </div>
@@ -281,7 +282,6 @@ export default function AuthPage() {
   if (userEmail) {
     return (
       <div className="flex-1">
-        <PromptGraph />
         <div className="mx-auto max-w-[460px] px-4 py-10 sm:py-14 flex flex-col gap-4">
           <div className="rounded-2xl border border-[var(--border)] bg-[var(--card)]/75 backdrop-blur-md p-6">
             <div className="text-sm font-semibold">Masuk sebagai</div>
@@ -303,7 +303,6 @@ export default function AuthPage() {
 
   return (
     <div className="flex-1">
-      <PromptGraph />
       <div className="mx-auto max-w-[460px] px-4 py-10 sm:py-14 flex flex-col gap-4">
         <form
           ref={cardRef}
