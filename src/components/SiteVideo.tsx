@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useRef } from "react";
 
-export default function HeroVideo() {
+export default function SiteVideo() {
   const ref = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
@@ -15,12 +15,12 @@ export default function HeroVideo() {
   }, []);
 
   return (
-    <div className="absolute inset-0 -z-10 overflow-hidden" aria-hidden="true">
+    <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden" aria-hidden="true">
       <video
         ref={ref}
-        className="h-full w-full object-cover opacity-30 dark:opacity-70"
-        src="/video/hero-ember.mp4"
-        poster="/video/hero-ember.jpg"
+        className="h-full w-full object-cover opacity-25 dark:opacity-60"
+        src="/video/site-bg.mp4"
+        poster="/video/site-bg.jpg"
         muted
         loop
         playsInline
@@ -28,8 +28,8 @@ export default function HeroVideo() {
         preload="auto"
         tabIndex={-1}
       />
-      <div className="absolute inset-0 bg-[var(--background)]/55 dark:bg-[var(--background)]/35" />
-      <div className="absolute inset-0 bg-gradient-to-b from-[var(--background)]/70 via-transparent to-[var(--background)]" />
+      <div className="absolute inset-0 bg-[var(--background)]/60 dark:bg-[var(--background)]/30" />
+      <div className="absolute inset-0 bg-gradient-to-b from-[var(--background)]/80 via-transparent to-[var(--background)]/80" />
     </div>
   );
 }
