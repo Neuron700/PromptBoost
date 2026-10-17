@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Moon, Sun, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { useEffect, useState } from "react";
 
 const nav = [
@@ -13,28 +13,16 @@ const nav = [
 
 export default function Navbar() {
   const pathname = usePathname();
-  const [dark, setDark] = useState(false);
   const [open, setOpen] = useState(false);
   const [userEmail, setUserEmail] = useState<string | null>(null);
 
   useEffect(() => {
-    const saved = localStorage.getItem("forge-theme");
-    const isDark = saved ? saved === "dark" : window.matchMedia("(prefers-color-scheme: dark)").matches;
-    setDark(isDark);
-    document.documentElement.classList.toggle("dark", isDark);
     import("@/lib/supabase/client").then(({ createClient }) => {
       const supabase = createClient();
       supabase.auth.getUser().then(({ data }) => setUserEmail(data.user?.email ?? null));
       supabase.auth.onAuthStateChange((_e, session) => setUserEmail(session?.user?.email ?? null));
     });
   }, []);
-
-  const toggle = () => {
-    const nd = !dark;
-    setDark(nd);
-    document.documentElement.classList.toggle("dark", nd);
-    localStorage.setItem("forge-theme", nd ? "dark" : "light");
-  };
 
   return (
     <header className="sticky top-0 z-40 backdrop-blur bg-[var(--background)]/80 border-b border-[var(--border)]">
@@ -61,9 +49,6 @@ export default function Navbar() {
           <Link href="/auth" className={`hidden sm:inline-flex h-9 sm:h-8 px-3 rounded-full border text-xs font-medium items-center min-h-[36px] ${userEmail ? "border-[var(--border)] bg-[var(--card)]" : "bg-[var(--forge-ink)] dark:bg-white text-white dark:text-black border-transparent"}`}>
             {userEmail ? "Akun" : "Masuk"}
           </Link>
-          <button onClick={toggle} aria-label="Toggle theme" className="w-9 h-9 sm:w-8 sm:h-8 grid place-items-center rounded-full border border-[var(--border)] hover:bg-[var(--muted)] transition-colors shrink-0">
-            {dark ? <Sun size={14} /> : <Moon size={14} />}
-          </button>
           <Link href="/optimizer" className="hidden sm:inline-flex h-9 sm:h-8 px-4 rounded-full bg-[var(--forge-ember)] hover:bg-[var(--forge-ember-hover)] text-white text-sm font-medium items-center transition-colors min-h-[36px]">
             Start Building
           </Link>

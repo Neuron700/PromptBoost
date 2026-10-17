@@ -1,8 +1,9 @@
 "use client";
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { useRouter } from "next/navigation";
 import { AlertCircle, ArrowRight, Check, Circle, Eye, EyeOff, Loader2 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
-import CodeField from "@/components/CodeField";
+import PromptField from "@/components/PromptField";
 
 function GoogleMark() {
   return (
@@ -55,6 +56,7 @@ type Mode = "login" | "register";
 
 export default function AuthPage() {
   const supabase = createClient();
+  const router = useRouter();
   const [mode, setMode] = useState<Mode>("login");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -68,8 +70,11 @@ export default function AuthPage() {
   const [capsOn, setCapsOn] = useState(false);
   const [touchedEmail, setTouchedEmail] = useState(false);
   const [shake, setShake] = useState(false);
+  const [success, setSuccess] = useState<string | null>(null);
   const emailRef = useRef<HTMLInputElement>(null);
   const pwRef = useRef<HTMLInputElement>(null);
+  const cardRef = useRef<HTMLFormElement>(null);
+  const reducedRef = useRef(false);
 
   const notify = (text: string, kind: Level = "info") => {
     setMsg(text);
@@ -84,6 +89,9 @@ export default function AuthPage() {
 
   useEffect(() => {
     refresh();
+    try {
+      reducedRef.current = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    } catch {}
     try {
       const savedEmail = localStorage.getItem("forge-email") || "";
       const savedRemember = localStorage.getItem("forge-remember");
@@ -197,8 +205,13 @@ export default function AuthPage() {
         if (error) notify(friendlyError(error), "error");
         else {
           persistEmail(email, remember);
-          notify("Login berhasil. Mengalihkan ke Optimizer.", "ok");
-          window.location.assign("/optimizer");
+          setLoading(false);
+          setSuccess(email);
+          window.setTimeout(() => {
+            router.push("/optimizer");
+            router.refresh();
+          }, 1150);
+          return;
         }
       } else {
         const { error } = await supabase.auth.signUp({ email, password });
@@ -222,10 +235,53 @@ export default function AuthPage() {
 
   const busy = loading || googleLoading;
 
+  const onCardMove = (e: React.PointerEvent<HTMLFormElement>) => {
+    const el = cardRef.current;
+    if (!el) return;
+    const r = el.getBoundingClientRect();
+    if (!r.width || !r.height) return;
+    const px = (e.clientX - r.left) / r.width;
+    const py = (e.clientY - r.top) / r.height;
+    el.style.setProperty("--mx", `${(px * 100).toFixed(2)}%`);
+    el.style.setProperty("--my", `${(py * 100).toFixed(2)}%`);
+    if (!reducedRef.current) {
+      el.style.transform = `perspective(1100px) rotateX(${((0.5 - py) * 2.4).toFixed(2)}deg) rotateY(${((px - 0.5) * 2.6).toFixed(2)}deg)`;
+    }
+  };
+
+  const onCardLeave = () => {
+    const el = cardRef.current;
+    if (!el) return;
+    el.style.transform = "";
+    el.style.setProperty("--mx", "50%");
+    el.style.setProperty("--my", "0%");
+  };
+
+  if (success) {
+    return (
+      <div className="flex-1">
+        <PromptField />
+        <div className="mx-auto max-w-[460px] px-4 py-10 sm:py-14">
+          <div className="rounded-2xl border border-[var(--forge-signal)] bg-[var(--card)]/80 backdrop-blur-md p-8 text-center forge-pop">
+            <span className="mx-auto grid h-14 w-14 place-items-center rounded-full bg-[var(--forge-signal)] text-white">
+              <Check size={26} strokeWidth={3} />
+            </span>
+            <div className="mt-4 text-base font-semibold">Berhasil masuk</div>
+            <div className="mt-1 font-mono text-xs break-all text-[var(--forge-muted)]">{success}</div>
+            <div className="mt-4 inline-flex items-center gap-2 text-xs text-[var(--forge-muted)]">
+              <Loader2 size={13} className="animate-spin" aria-hidden />
+              Membuka Optimizer
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   if (userEmail) {
     return (
       <div className="flex-1">
-        <CodeField />
+        <PromptField />
         <div className="mx-auto max-w-[460px] px-4 py-10 sm:py-14 flex flex-col gap-4">
           <div className="rounded-2xl border border-[var(--border)] bg-[var(--card)]/75 backdrop-blur-md p-6">
             <div className="text-sm font-semibold">Masuk sebagai</div>
@@ -247,14 +303,22 @@ export default function AuthPage() {
 
   return (
     <div className="flex-1">
-      <CodeField />
+      <PromptField />
       <div className="mx-auto max-w-[460px] px-4 py-10 sm:py-14 flex flex-col gap-4">
         <form
+          ref={cardRef}
           onSubmit={submit}
-          className={`rounded-2xl border border-[var(--border)] bg-[var(--card)]/75 backdrop-blur-md p-6 ${shake ? "forge-shake" : ""}`}
+          onPointerMove={onCardMove}
+          onPointerLeave={onCardLeave}
+          className={`group relative overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--card)]/75 backdrop-blur-md p-6 transition-transform duration-300 ease-out will-change-transform ${shake ? "forge-shake" : ""}`}
           onAnimationEnd={() => setShake(false)}
           noValidate
         >
+          <span
+            aria-hidden
+            className="forge-spot pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+          />
+          <div className="forge-stagger relative">
           <h1 className="text-lg font-semibold">
             {mode === "login" ? "Masuk ke akun kamu" : "Buat akun baru"}
           </h1>
@@ -290,7 +354,7 @@ export default function AuthPage() {
             onClick={loginGoogle}
             disabled={busy}
             aria-busy={googleLoading}
-            className="mt-4 w-full min-h-[48px] h-12 rounded-full border border-[var(--border)] bg-[var(--background)] hover:bg-[var(--muted)] text-sm font-medium inline-flex items-center justify-center gap-2.5 cursor-pointer transition-[background-color,scale,border-color] duration-150 active:scale-[0.96] disabled:opacity-60 disabled:cursor-default disabled:active:scale-100"
+            className="forge-sheen mt-4 w-full min-h-[48px] h-12 rounded-full border border-[var(--border)] bg-[var(--background)] hover:bg-[var(--muted)] text-sm font-medium inline-flex items-center justify-center gap-2.5 cursor-pointer transition-[background-color,scale,border-color] duration-150 active:scale-[0.96] disabled:opacity-60 disabled:cursor-default disabled:active:scale-100"
           >
             <span className="relative w-[18px] h-[18px] shrink-0">
               <Swap show={!googleLoading}>
@@ -310,7 +374,7 @@ export default function AuthPage() {
           </div>
 
           <label htmlFor="email" className="block mt-4 text-xs font-medium">Email</label>
-          <div className="relative mt-1">
+          <div className="relative mt-1 forge-field">
             <input
               id="email"
               ref={emailRef}
@@ -350,7 +414,7 @@ export default function AuthPage() {
           )}
 
           <label htmlFor="password" className="block mt-3.5 text-xs font-medium">Password</label>
-          <div className="relative mt-1">
+          <div className="relative mt-1 forge-field">
             <input
               id="password"
               ref={pwRef}
@@ -391,8 +455,8 @@ export default function AuthPage() {
                   {[0, 1, 2, 3].map((i) => (
                     <span
                       key={i}
-                      className="h-1.5 w-8 rounded-full transition-colors duration-200 ease-out"
-                      style={{ background: i < pw.score ? meter.color : "var(--muted)" }}
+                      className="h-1.5 w-8 rounded-full transition-[background-color,transform] duration-[420ms] ease-[cubic-bezier(0.34,1.56,0.64,1)]"
+                      style={{ background: i < pw.score ? meter.color : "var(--muted)", transform: i < pw.score ? "scaleY(1.45)" : "scaleY(1)" }}
                     />
                   ))}
                 </span>
@@ -427,13 +491,13 @@ export default function AuthPage() {
           >
             <span
               aria-hidden
-              className={`relative w-9 h-5 rounded-full transition-colors duration-200 ease-out ${
+              className={`relative shrink-0 w-11 h-6 rounded-full transition-colors duration-200 ease-out ${
                 remember ? "bg-[var(--forge-ember)]" : "bg-[var(--muted)] border border-[var(--border)]"
               }`}
             >
               <span
-                className={`absolute top-0.5 h-4 w-4 rounded-full bg-white transition-transform duration-200 ease-out ${
-                  remember ? "translate-x-[1.125rem]" : "translate-x-0.5"
+                className={`absolute top-0.5 left-0 h-5 w-5 rounded-full bg-white shadow-sm transition-transform duration-200 ease-out ${
+                  remember ? "translate-x-[22px]" : "translate-x-0.5"
                 }`}
               />
             </span>
@@ -444,7 +508,7 @@ export default function AuthPage() {
             type="submit"
             disabled={busy}
             aria-busy={loading}
-            className="mt-2 w-full min-h-[48px] h-12 rounded-full bg-[var(--forge-ember)] hover:bg-[var(--forge-ember-hover)] text-white text-sm font-medium inline-flex items-center justify-center gap-2 cursor-pointer transition-[background-color,scale] duration-150 active:scale-[0.96] disabled:opacity-60 disabled:cursor-default disabled:active:scale-100"
+            className="forge-sheen mt-2 w-full min-h-[48px] h-12 rounded-full bg-[var(--forge-ember)] hover:bg-[var(--forge-ember-hover)] text-white text-sm font-medium inline-flex items-center justify-center gap-2 cursor-pointer transition-[background-color,scale] duration-150 active:scale-[0.96] disabled:opacity-60 disabled:cursor-default disabled:active:scale-100"
           >
             {loading && <Loader2 size={16} className="animate-spin" aria-hidden />}
             {mode === "login" ? (loading ? "Memeriksa akun" : "Masuk") : loading ? "Membuat akun" : "Daftar"}
@@ -470,6 +534,7 @@ export default function AuthPage() {
           <p className="mt-3 text-[11px] text-[var(--forge-muted)] leading-5">
             {mode === "login" ? "Belum punya akun? Pindah ke Daftar untuk membuatnya." : "Sudah punya akun? Pindah ke Masuk."}
           </p>
+          </div>
         </form>
       </div>
     </div>

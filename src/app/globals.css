@@ -4,7 +4,12 @@
 
 /* PromptBoost — Forge Workshop semantic tokens
    ink = baja/arang, paper = kertas kerja, slate = meja baja,
-   ember = bara api (CTA only), signal = percikan sukses */
+   ember = bara api (CTA only), signal = percikan sukses
+
+   MODE: gelap permanen. Kelas "dark" dipasang mati di layout.tsx,
+   jadi blok :root di bawah hanya cetak biru nilai sebelum ditimpa
+   dan tidak pernah tampil ke pengguna. Jangan hidupkan mode terang
+   tanpa meninjau ulang seluruh kelas dark: di komponen. */
 :root {
   --forge-ink: oklch(0.17 0.02 260);
   --forge-paper: oklch(0.98 0.005 90);
@@ -95,6 +100,8 @@ img, svg { max-width: 100%; }
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
   }
+  .forge-stagger > *, .forge-rise { animation-delay: 0ms !important; }
+  .forge-sheen::after { display: none; }
 }
 
 /* animasi sekali jalan untuk banner pesan dan getar kartu */
@@ -103,6 +110,50 @@ img, svg { max-width: 100%; }
   to { opacity: 1; transform: translateY(0); }
 }
 .forge-pop { animation: forge-pop 220ms ease-out both; }
+
+/* masuk berjenjang: tiap bagian kartu muncul berurutan, bukan serentak */
+@keyframes forge-rise {
+  from { opacity: 0; transform: translateY(10px) scale(0.986); filter: blur(3px); }
+  to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+}
+.forge-rise { animation: forge-rise 460ms cubic-bezier(0.22, 1, 0.36, 1) both; }
+.forge-stagger > * { animation: forge-rise 460ms cubic-bezier(0.22, 1, 0.36, 1) both; }
+.forge-stagger > *:nth-child(1) { animation-delay: 40ms; }
+.forge-stagger > *:nth-child(2) { animation-delay: 85ms; }
+.forge-stagger > *:nth-child(3) { animation-delay: 130ms; }
+.forge-stagger > *:nth-child(4) { animation-delay: 175ms; }
+.forge-stagger > *:nth-child(5) { animation-delay: 215ms; }
+.forge-stagger > *:nth-child(6) { animation-delay: 250ms; }
+.forge-stagger > *:nth-child(7) { animation-delay: 285ms; }
+.forge-stagger > *:nth-child(8) { animation-delay: 320ms; }
+.forge-stagger > *:nth-child(9) { animation-delay: 355ms; }
+.forge-stagger > *:nth-child(10) { animation-delay: 390ms; }
+.forge-stagger > *:nth-child(11) { animation-delay: 425ms; }
+.forge-stagger > *:nth-child(12) { animation-delay: 460ms; }
+
+/* kilau yang menyapu sekali saat kursor mendekat */
+.forge-sheen { position: relative; overflow: hidden; }
+.forge-sheen::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg, transparent 36%, color-mix(in oklab, var(--forge-plate-fg) 20%, transparent) 50%, transparent 64%);
+  transform: translateX(-125%);
+  transition: transform 640ms cubic-bezier(0.22, 1, 0.36, 1);
+  pointer-events: none;
+}
+.forge-sheen:hover::after { transform: translateX(125%); }
+
+/* kolom yang sedang aktif memancarkan cincin lembut */
+.forge-field:focus-within {
+  box-shadow: 0 0 0 4px color-mix(in oklab, var(--forge-ember) 18%, transparent);
+  border-radius: 0.75rem;
+}
+
+/* sorot yang mengikuti kursor di atas kartu */
+.forge-spot {
+  background: radial-gradient(240px circle at var(--mx, 50%) var(--my, 0%), color-mix(in oklab, var(--forge-ember) 16%, transparent), transparent 72%);
+}
 
 @keyframes forge-shake {
   0%, 100% { transform: translateX(0); }
