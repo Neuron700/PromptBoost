@@ -1,12 +1,12 @@
 import Hero from "@/components/Hero";
-import SiteVideo from "@/components/SiteVideo";
+import CodeField from "@/components/CodeField";
 import Link from "next/link";
 import { Hammer, Layers, Sparkles, ArrowRight, Check } from "lucide-react";
 
 export default function Home() {
   return (
     <div className="flex-1">
-      <SiteVideo />
+      <CodeField />
       <Hero />
 
       <section className="mx-auto max-w-[1160px] px-4 sm:px-6 pb-8">

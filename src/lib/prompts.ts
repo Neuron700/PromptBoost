@@ -135,4 +135,37 @@ export const templates: TemplateItem[] = [
   { id:"tone-adapter", title:"Ubah Gaya Bahasa", category:"general", description:"Adaptasi gaya bahasa", prompt:"Ubah gaya teks berikut dari {DARI} ke {KE} tanpa kehilangan makna:\n\n{TEXT}", vars:[{key:"DARI",label:"Dari",placeholder:"formal"}, {key:"KE",label:"Ke",placeholder:"santai anak muda"}, {key:"TEXT",label:"Teks",placeholder:"paste teks..."}] },
   { id:"cek-logika", title:"Cek Logika", category:"general", description:"Cek logika argumen", prompt:"Cek logika argumen berikut. Tentukan utama, fallacy yang dipakai, dan cara memperbaikinya:\n\n{TEXT}", vars:[{key:"TEXT",label:"Teks",placeholder:"paste argumen..."}] },
   { id:"translate-prompt", title:"Terjemahkan Prompt", category:"general", description:"Prompt lintas bahasa", prompt:"Terjemahkan prompt berikut ke {BAHASA} dengan tetap mempertahankan istilah teknis {ISTILAH}:\n\n{TEXT}", vars:[{key:"BAHASA",label:"Bahasa",placeholder:"Inggris"}, {key:"ISTILAH",label:"Istilah",placeholder:"prompt dan context"}, {key:"TEXT",label:"Teks",placeholder:"paste prompt..."}] },
+
+  // CODING GELOMBANG 2
+  { id:"regex-builder", title:"Regex Builder", category:"coding", description:"Bantu susun regex", prompt:"Susun regex untuk mencocokkan {POLA} pada teks {CONTOH}. Jelaskan tiap bagian pola dan beri contoh uji.", vars:[{key:"POLA",label:"Pola",placeholder:"alamat email"}, {key:"CONTOH",label:"Contoh teks",placeholder:"baris log server"}] },
+  { id:"api-design", title:"Rancang API", category:"coding", description:"Rancangan endpoint", prompt:"Rancang API untuk {FITUR} dengan gaya {GAYA}. Sertakan daftar endpoint, bentuk request, bentuk response, dan kode status.", vars:[{key:"FITUR",label:"Fitur",placeholder:"katalog produk"}, {key:"GAYA",label:"Gaya",placeholder:"REST"}] },
+
+  // WRITING GELOMBANG 2
+  { id:"lamaran-kerja", title:"Surat Lamaran", category:"writing", description:"Surat lamaran kerja", prompt:"Tulis surat lamaran untuk posisi {POSISI} di {PERUSAHAAN}. Tonjolkan pengalaman {PENGALAMAN} dan tutup dengan ajakan wawancara.", vars:[{key:"POSISI",label:"Posisi",placeholder:"Frontend Developer"}, {key:"PERUSAHAAN",label:"Perusahaan",placeholder:"startup lokal"}, {key:"PENGALAMAN",label:"Pengalaman",placeholder:"2 tahun React"}] },
+  { id:"blog-outline", title:"Kerangka Blog", category:"writing", description:"Kerangka artikel blog", prompt:"Buat kerangka blog tentang {TOPIK} untuk {AUDIENCE} dengan {JUMLAH} subjudul. Sertakan tiga judul alternatif dan kata kunci {KATA_KUNCI}.", vars:[{key:"TOPIK",label:"Topik",placeholder:"belajar prompt"}, {key:"AUDIENCE",label:"Audiens",placeholder:"pemula"}, {key:"JUMLAH",label:"Jumlah subjudul",placeholder:"6"}, {key:"KATA_KUNCI",label:"Kata kunci",placeholder:"prompt AI"}] },
+
+  // RESEARCH GELOMBANG 2
+  { id:"literature-map", title:"Peta Literatur", category:"research", description:"Peta literatur", prompt:"Susun peta literatur untuk {TOPIK} dari {JUMLAH} sumber. Kelompokkan menurut tema {TEMA} dan tunjukkan posisi tiap sumber.", vars:[{key:"TOPIK",label:"Topik",placeholder:"prompt engineering"}, {key:"JUMLAH",label:"Jumlah sumber",placeholder:"12"}, {key:"TEMA",label:"Tema",placeholder:"otomatisasi dan etika"}] },
+
+  // MARKETING GELOMBANG 2
+  { id:"copy-landing", title:"Copy Landing Page", category:"marketing", description:"Copy halaman jualan", prompt:"Tulis copy landing page untuk {PRODUK}: headline, subheadline, tiga manfaat, dan penutup. Audiens {AUDIENCE} dengan nada {NADA}.", vars:[{key:"PRODUK",label:"Produk",placeholder:"PromptBoost"}, {key:"AUDIENCE",label:"Audiens",placeholder:"developer"}, {key:"NADA",label:"Nada",placeholder:"tegas dan ramah"}] },
+  { id:"ads-variants", title:"Varian Iklan", category:"marketing", description:"Beberapa varian iklan", prompt:"Buat {JUMLAH} varian iklan untuk {PRODUK} di {PLATFORM}. Tiap varian pakai sudut pesan {SUDUT} yang berbeda.", vars:[{key:"JUMLAH",label:"Jumlah",placeholder:"5"}, {key:"PRODUK",label:"Produk",placeholder:"kelas prompt"}, {key:"PLATFORM",label:"Platform",placeholder:"Instagram"}, {key:"SUDUT",label:"Sudut pesan",placeholder:"hemat waktu"}] },
+
+  // EDUCATION GELOMBANG 2
+  { id:"bank-soal", title:"Bank Soal", category:"education", description:"Soal pilihan ganda", prompt:"Buat {JUMLAH} soal pilihan ganda tentang {TOPIK} untuk kelas {KELAS}. Sertakan kunci jawaban dan pembahasan singkat.", vars:[{key:"JUMLAH",label:"Jumlah soal",placeholder:"10"}, {key:"TOPIK",label:"Topik",placeholder:"teks eksplanasi"}, {key:"KELAS",label:"Kelas",placeholder:"VIII"}] },
+  { id:"umpan-balik-siswa", title:"Umpan Balik Siswa", category:"education", description:"Umpan balik untuk siswa", prompt:"Tulis umpan balik untuk siswa bernama {NAMA} atas tugas {TUGAS}. Nada {NADA}. Sebutkan dua kekuatan dan satu saran perbaikan.", vars:[{key:"NAMA",label:"Nama",placeholder:"Rani"}, {key:"TUGAS",label:"Tugas",placeholder:"esai argumentatif"}, {key:"NADA",label:"Nada",placeholder:"membangun"}] },
+
+  // IMAGE GELOMBANG 2
+  { id:"desain-logo", title:"Prompt Logo", category:"image", description:"Prompt desain logo", prompt:"Buat prompt logo untuk merek {MEREK} di bidang {BIDANG}. Gaya {GAYA}, palet {WARNA}, latar polos, tanpa teks.", vars:[{key:"MEREK",label:"Merek",placeholder:"PromptBoost"}, {key:"BIDANG",label:"Bidang",placeholder:"alat bantu AI"}, {key:"GAYA",label:"Gaya",placeholder:"geometris"}, {key:"WARNA",label:"Palet",placeholder:"ink dan ember"}] },
+  { id:"ilustrasi-scene", title:"Ilustrasi Scene", category:"image", description:"Prompt ilustrasi", prompt:"Buat prompt ilustrasi adegan {ADEGAN} dengan suasana {SUASANA}, gaya {GAYA}, dan pencahayaan {CAHAYA}.", vars:[{key:"ADEGAN",label:"Adegan",placeholder:"bengkel digital"}, {key:"SUASANA",label:"Suasana",placeholder:"hangat dan sibuk"}, {key:"GAYA",label:"Gaya",placeholder:"editorial"}, {key:"CAHAYA",label:"Cahaya",placeholder:"golden hour"}] },
+
+  // DATA GELOMBANG 2
+  { id:"query-sql", title:"Query SQL", category:"data", description:"Query SQL siap pakai", prompt:"Tulis query SQL untuk {TUJUAN} dari tabel dengan kolom {KOLOM} pada database {DB}. Sertakan penjelasan tiap klausa.", vars:[{key:"TUJUAN",label:"Tujuan",placeholder:"pengguna teraktif"}, {key:"KOLOM",label:"Kolom",placeholder:"user_id dan created_at"}, {key:"DB",label:"Database",placeholder:"PostgreSQL"}] },
+
+  // BUSINESS GELOMBANG 2
+  { id:"analisis-swot", title:"Analisis SWOT", category:"business", description:"Analisis SWOT", prompt:"Susun analisis SWOT untuk {SUBJEK}. Isi tiap kuadran dengan bukti {BUKTI} dan tutup dengan tiga langkah prioritas.", vars:[{key:"SUBJEK",label:"Subjek",placeholder:"PromptBoost"}, {key:"BUKTI",label:"Bukti",placeholder:"data pengguna 3 bulan"}] },
+
+  // GENERAL GELOMBANG 2
+  { id:"sederhanakan", title:"Sederhanakan Teks", category:"general", description:"Teks lebih sederhana", prompt:"Sederhanakan teks berikut untuk pembaca {PEMBACA}. Pertahankan makna asli dan hindari istilah yang rumit:\n\n{TEXT}", vars:[{key:"PEMBACA",label:"Pembaca",placeholder:"siswa SMP"}, {key:"TEXT",label:"Teks",placeholder:"paste teks..."}] },
+  { id:"matriks-keputusan", title:"Matriks Keputusan", category:"general", description:"Bantu ambil keputusan", prompt:"Buat matriks keputusan untuk memilih di antara {OPSI}. Kriteria {KRITERIA}. Beri bobot tiap kriteria dan rekomendasi akhir.", vars:[{key:"OPSI",label:"Opsi",placeholder:"tiga framework"}, {key:"KRITERIA",label:"Kriteria",placeholder:"kecepatan dan biaya"}] },
 ];
