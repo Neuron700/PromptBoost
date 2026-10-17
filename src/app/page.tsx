@@ -1,10 +1,12 @@
 import Hero from "@/components/Hero";
+import SiteVideo from "@/components/SiteVideo";
 import Link from "next/link";
 import { Hammer, Layers, Sparkles, ArrowRight, Check } from "lucide-react";
 
 export default function Home() {
   return (
     <div className="flex-1">
+      <SiteVideo />
       <Hero />
 
       <section className="mx-auto max-w-[1160px] px-4 sm:px-6 pb-8">
@@ -24,11 +26,11 @@ export default function Home() {
       </section>
 
       <section className="mx-auto max-w-[1160px] px-4 sm:px-6 pb-10">
-        <div className="rounded-2xl border border-[var(--border)] bg-[var(--forge-ink)] text-white p-6 sm:p-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div className="rounded-2xl border border-[var(--forge-plate-line)] bg-[var(--forge-plate)] text-[var(--forge-paper)] p-6 sm:p-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div>
-            <div className="font-mono text-[11px] tracking-[0.16em] opacity-70">SIAP MENEMPA?</div>
+            <div className="font-mono text-[11px] tracking-[0.16em] opacity-60">SIAP MENEMPA?</div>
             <div className="mt-1 text-xl font-semibold">Mulai dari ide mentah, bawa pulang prompt siap pakai.</div>
-            <div className="mt-2 flex flex-wrap gap-2 text-xs opacity-80">
+            <div className="mt-2 flex flex-wrap gap-2 text-xs opacity-75">
               <span className="inline-flex items-center gap-1.5"><Check size={12}/> Copy Text/MD/JSON</span>
               <span className="inline-flex items-center gap-1.5"><Check size={12}/> Score breakdown</span>
               <span className="inline-flex items-center gap-1.5"><Check size={12}/> History</span>

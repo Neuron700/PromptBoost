@@ -15,6 +15,10 @@
   --forge-ember-hover: oklch(0.58 0.20 30);
   --forge-signal: oklch(0.62 0.16 145);
   --forge-warn: oklch(0.68 0.14 55);
+  /* plate = permukaan baja yang SELALU gelap, tidak ikut mode.
+     dipakai untuk panel CTA yang teksnya selalu terang */
+  --forge-plate: oklch(0.19 0.02 260);
+  --forge-plate-line: oklch(0.32 0.02 260);
 
   --background: var(--forge-paper);
   --foreground: var(--forge-ink);
