@@ -33,7 +33,9 @@ export default function TemplatesPage() {
             <div className="text-[11px] font-mono tracking-widest text-[var(--forge-muted)]">{categoryMeta[t.category].label}</div>
             <div className="font-semibold text-sm mt-1">{t.title}</div>
             <div className="text-xs text-[var(--forge-muted)] mt-1 line-clamp-2">{t.description}</div>
-            <div className="mt-3 rounded-lg bg-[var(--muted)] p-2 font-mono text-xs leading-4 line-clamp-3 whitespace-pre-wrap">{t.prompt}</div>
+            <div className="mt-3 rounded-lg bg-[var(--muted)] p-2">
+              <div className="font-mono text-xs leading-4 line-clamp-3 whitespace-pre-wrap">{t.prompt}</div>
+            </div>
             <button onClick={()=> { setActive(t); setVars({}); }} className="mt-3 h-8 rounded-full bg-[var(--forge-ember)] text-white text-xs font-medium">Use Template</button>
           </div>
         ))}

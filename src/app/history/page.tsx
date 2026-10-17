@@ -68,8 +68,12 @@ export default function HistoryPage() {
                   <div className="mt-1.5 text-[11px] font-mono tracking-widest text-[var(--forge-muted)]">CRAWLER {it.stages?.length ?? 6} TAHAP • {it.tags.length} KATA</div>
                 )}
                 <div className="mt-2 grid sm:grid-cols-2 gap-2">
-                  <div className="rounded-lg bg-[var(--muted)] p-2 text-xs leading-4 line-clamp-3 whitespace-pre-wrap">{it.original}</div>
-                  <div className="rounded-lg bg-[var(--forge-ink)] dark:bg-white text-white dark:text-black p-2 text-xs leading-4 line-clamp-3 whitespace-pre-wrap font-mono">{it.optimized}</div>
+                  <div className="rounded-lg bg-[var(--muted)] p-2">
+                    <div className="text-xs leading-4 line-clamp-3 whitespace-pre-wrap">{it.original}</div>
+                  </div>
+                  <div className="rounded-lg bg-[var(--forge-ink)] dark:bg-white text-white dark:text-black p-2">
+                    <div className="text-xs leading-4 line-clamp-3 whitespace-pre-wrap font-mono">{it.optimized}</div>
+                  </div>
                 </div>
               </div>
               <div className="flex sm:flex-col gap-2 shrink-0">
