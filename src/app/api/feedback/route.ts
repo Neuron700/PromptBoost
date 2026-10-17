@@ -60,10 +60,10 @@ export async function POST(req: NextRequest) {
         auth: { user: smtpUser, pass: smtpPass },
       });
       await transporter.sendMail({
-        from: `PromptForge Feedback <${smtpUser}>`,
+        from: `PromptBoost Feedback <${smtpUser}>`,
         to: TARGET,
         replyTo: entry.email,
-        subject: `Feedback PromptForge rating ${entry.rating} dari ${entry.name || entry.email}`,
+        subject: `Feedback PromptBoost rating ${entry.rating} dari ${entry.name || entry.email}`,
         text: `Nama: ${entry.name || "-"}\nEmail: ${entry.email}\nRating: ${entry.rating}/5\nWaktu: ${entry.createdAt}\n\nPesan:\n${entry.message}`,
       });
     } catch (e: any) {

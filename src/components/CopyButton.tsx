@@ -20,11 +20,11 @@ export default function CopyButton({ text, variant="text" }: { text: string; var
     let mime = "text/plain";
     if (variant === "markdown") {
       content = text;
-      filename = `promptforge-${ts}.md`;
+      filename = `PromptBoost-${ts}.md`;
       mime = "text/markdown";
     } else if (variant === "json") {
       content = JSON.stringify({ prompt: text, exportedAt: new Date().toISOString() }, null, 2);
-      filename = `promptforge-${ts}.json`;
+      filename = `PromptBoost-${ts}.json`;
       mime = "application/json";
     }
     // trigger download ke File Explorer

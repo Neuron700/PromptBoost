@@ -2,7 +2,7 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
-/* PromptForge — Forge Workshop semantic tokens
+/* PromptBoost — Forge Workshop semantic tokens
    ink = baja/arang, paper = kertas kerja, slate = meja baja,
    ember = bara api (CTA only), signal = percikan sukses */
 :root {

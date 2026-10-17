@@ -40,8 +40,8 @@ export default function Navbar() {
     <header className="sticky top-0 z-40 backdrop-blur bg-[var(--background)]/80 border-b border-[var(--border)]">
       <div className="mx-auto max-w-[1160px] px-4 sm:px-6 h-[56px] flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2.5 focus-visible:outline-none">
-          <img src="/icon.svg" alt="PromptForge" width={32} height={32} className="w-8 h-8 rounded-lg object-cover shrink-0" />
-          <span className="font-mono text-[13px] tracking-[0.14em] font-semibold">PROMPTFORGE</span>
+          <img src="/icon.svg" alt="PromptBoost" width={32} height={32} className="w-8 h-8 rounded-lg object-cover shrink-0" />
+          <span className="font-mono text-[13px] tracking-[0.14em] font-semibold">PromptBoost</span>
           <span className="hidden sm:inline text-[10px] tracking-widest text-[var(--forge-muted)] border border-[var(--border)] rounded-full px-2 py-0.5">BETA</span>
         </Link>
 

@@ -24,7 +24,7 @@ export default function FeedbackPage() {
   return (
     <div className="mx-auto max-w-[640px] px-4 py-6 sm:py-8 flex-1 w-full">
       <div className="rounded-2xl border border-[var(--border)] bg-[var(--card)] p-4 sm:p-6">
-        <h1 className="text-lg sm:text-xl font-semibold">Feedback untuk PromptForge</h1>
+        <h1 className="text-lg sm:text-xl font-semibold">Feedback untuk PromptBoost</h1>
         <p className="text-xs text-[var(--forge-muted)] mt-1">Saran kamu akan dikirim langsung ke <span className="font-mono font-medium text-[var(--foreground)] break-all">syahlanbudi73@gmail.com</span></p>
 
         <label className="block mt-4 text-xs font-medium">Nama
@@ -50,7 +50,7 @@ export default function FeedbackPage() {
         {status && <div className="mt-3 rounded-xl bg-[var(--muted)] p-3 text-xs">{status}</div>}
 
         <div className="mt-6 rounded-xl bg-[var(--muted)] p-3 text-xs leading-5 text-[var(--forge-muted)] break-words">
-          Atau hubungi langsung via email: <a href="mailto:syahlanbudi73@gmail.com?subject=Feedback%20PromptForge" className="underline font-medium text-[var(--foreground)] break-all">syahlanbudi73@gmail.com</a>
+          Atau hubungi langsung via email: <a href="mailto:syahlanbudi73@gmail.com?subject=Feedback%20PromptBoost" className="underline font-medium text-[var(--foreground)] break-all">syahlanbudi73@gmail.com</a>
         </div>
       </div>
     </div>
