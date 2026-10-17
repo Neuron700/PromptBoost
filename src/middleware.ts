@@ -29,7 +29,7 @@ export async function middleware(request: NextRequest) {
   }
   const path = request.nextUrl.pathname;
 
-  const isPublic = path === "/" || path.startsWith("/dashboard") || publicPaths.some((p) => path.startsWith(p)) || path.startsWith("/_next") || path.startsWith("/api") || path.startsWith("/video") || path === "/favicon.ico" || path === "/icon.svg" || path.startsWith("/icon");
+  const isPublic = path === "/" || path.startsWith("/dashboard") || publicPaths.some((p) => path.startsWith(p)) || path.startsWith("/_next") || path.startsWith("/api") || path.startsWith("/video") || path === "/favicon.ico" || path === "/icon.svg" || path.startsWith("/icon") || path === "/manifest.webmanifest" || path === "/sw.js" || path.startsWith("/icons/");
 
   if (!user && !isPublic) {
     const url = request.nextUrl.clone();
@@ -45,5 +45,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/((?!_next/static|_next/image|favicon.ico|icon.svg).*)"],
+  matcher: ["/((?!_next/static|_next/image|favicon.ico|icon.svg|manifest.webmanifest|sw.js|icons/).*)"],
 };

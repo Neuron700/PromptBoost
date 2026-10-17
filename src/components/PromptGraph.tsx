@@ -109,6 +109,13 @@ export default function PromptGraph({ success = false }: PromptGraphProps) {
     let px = -9999;
     let py = -9999;
     let pointerIn = false;
+    let mx = -9999;
+    let my = -9999;
+    let mouseIn = false;
+    let tx = -9999;
+    let ty = -9999;
+    let touchHold = 0;
+    let touchDown = false;
     let intro = 0;
     let burst = success ? 1 : 0;
     let aura = 0;
@@ -263,6 +270,11 @@ export default function PromptGraph({ success = false }: PromptGraphProps) {
 
       px = -9999;
       py = -9999;
+      tx = -9999;
+      ty = -9999;
+      touchHold = 0;
+      touchDown = false;
+      mouseIn = false;
     }
 
     function quadPoint(ax: number, ay: number, cx: number, cy: number, bx: number, by: number, t: number) {
@@ -424,6 +436,20 @@ export default function PromptGraph({ success = false }: PromptGraphProps) {
       const stepF = Math.max(0, Math.min(3, dtMs / 16.667));
       frame += stepF;
 
+      if (touchDown) touchHold = 48;
+      if (touchHold > 0) touchHold = Math.max(0, touchHold - stepF);
+      if (touchHold > 0) {
+        px = tx;
+        py = ty;
+        pointerIn = true;
+      } else if (mouseIn) {
+        px = mx;
+        py = my;
+        pointerIn = true;
+      } else {
+        pointerIn = false;
+      }
+
       intro = Math.min(1, intro + 0.022 * stepF);
       aura += ((pointerIn ? 1 : 0) - aura) * 0.08 * stepF;
       if (burst > 0) burst = Math.max(0, Math.min(1, burst - 0.012 * stepF));
@@ -519,20 +545,41 @@ export default function PromptGraph({ success = false }: PromptGraphProps) {
     };
 
     const onPointerMove = (e: PointerEvent) => {
-      px = e.clientX;
-      py = e.clientY;
-      const first = !pointerIn;
-      pointerIn = true;
+      if (e.pointerType === "touch") return;
+      mx = e.clientX;
+      my = e.clientY;
+      const first = !mouseIn;
+      mouseIn = true;
       if (reduced) return;
       if (first || (frame % 9 < 1 && ripples.length < 6)) {
         ripples.push({ x: e.clientX, y: e.clientY, r: 6, life: 1 });
       }
     };
 
-    const onLeave = () => {
-      pointerIn = false;
-      px = -9999;
-      py = -9999;
+    const setTouch = (e: TouchEvent, fresh: boolean) => {
+      const t = e.touches[0] || e.changedTouches[0];
+      if (!t) return;
+      tx = t.clientX;
+      ty = t.clientY;
+      touchDown = true;
+      touchHold = 48;
+      if (reduced) return;
+      if (fresh || (frame % 9 < 1 && ripples.length < 6)) {
+        ripples.push({ x: t.clientX, y: t.clientY, r: 6, life: 1 });
+      }
+    };
+
+    const onTouchStart = (e: TouchEvent) => setTouch(e, true);
+    const onTouchMove = (e: TouchEvent) => setTouch(e, false);
+    const onTouchEnd = () => {
+      touchDown = false;
+      touchHold = Math.max(touchHold, 26);
+    };
+
+    const onLeave = (e: Event) => {
+      const p = e as PointerEvent;
+      if (p.pointerType === "touch") return;
+      mouseIn = false;
     };
 
     const onAuthSuccess = () => {
@@ -557,6 +604,10 @@ export default function PromptGraph({ success = false }: PromptGraphProps) {
     }
 
     window.addEventListener("pointermove", onPointerMove, { passive: true });
+    window.addEventListener("touchstart", onTouchStart, { passive: true });
+    window.addEventListener("touchmove", onTouchMove, { passive: true });
+    window.addEventListener("touchend", onTouchEnd, { passive: true });
+    window.addEventListener("touchcancel", onTouchEnd, { passive: true });
     window.addEventListener("resize", onResize);
     window.addEventListener("blur", onLeave);
     window.addEventListener("forge:auth-success", onAuthSuccess);
@@ -577,6 +628,10 @@ export default function PromptGraph({ success = false }: PromptGraphProps) {
       cancelAnimationFrame(raf);
       clearTimeout(resizeTimer);
       window.removeEventListener("pointermove", onPointerMove);
+      window.removeEventListener("touchstart", onTouchStart);
+      window.removeEventListener("touchmove", onTouchMove);
+      window.removeEventListener("touchend", onTouchEnd);
+      window.removeEventListener("touchcancel", onTouchEnd);
       window.removeEventListener("resize", onResize);
       window.removeEventListener("blur", onLeave);
       window.removeEventListener("forge:auth-success", onAuthSuccess);
