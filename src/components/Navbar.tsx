@@ -41,7 +41,7 @@ export default function Navbar() {
       <div className="mx-auto max-w-[1160px] px-4 sm:px-6 h-[56px] flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2.5 focus-visible:outline-none">
           <img src="/icon.svg" alt="PromptBoost" width={32} height={32} className="w-8 h-8 rounded-lg object-cover shrink-0" />
-          <span className="font-mono text-[13px] tracking-[0.14em] font-semibold">PromptBoost</span>
+          <span className="font-mono text-[13px] tracking-[0.14em] font-semibold">PROMPTBOOST</span>
           <span className="hidden sm:inline text-[10px] tracking-widest text-[var(--forge-muted)] border border-[var(--border)] rounded-full px-2 py-0.5">BETA</span>
         </Link>
 
