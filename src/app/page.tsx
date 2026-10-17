@@ -1,7 +1,7 @@
 import Hero from "@/components/Hero";
 import CodeField from "@/components/CodeField";
 import Link from "next/link";
-import { Hammer, Layers, Sparkles, ArrowRight, Check } from "lucide-react";
+import { Hammer, Layers, Sparkles, ArrowRight, Check, Pencil } from "lucide-react";
 
 export default function Home() {
   return (
@@ -14,7 +14,7 @@ export default function Home() {
           {[
             { title:"Pilih Tujuan", desc:"9 kategori dengan struktur berbeda. Coding ≠ Writing ≠ Image.", icon: Layers },
             { title:"Tempa Prompt", desc:"AI merapikan intent, konteks, dan constraints jadi blok ROLE/OBJECTIVE.", icon: Hammer },
-            { title:"Bandingkan Skor", desc:"Lihat Before/After 38 → 89 plus breakdown Clarity/Context.", icon: Sparkles },
+            { title:"Bandingkan Skor", desc:"Lihat Before/After 38 • 89 plus breakdown Clarity/Context.", icon: Sparkles },
           ].map((f)=> (
             <div key={f.title} className="rounded-2xl border border-[var(--border)] bg-[var(--card)]/70 backdrop-blur-sm p-5">
               <f.icon size={18} className="text-[var(--forge-ember)]" />
@@ -47,7 +47,7 @@ export default function Home() {
           <div className="text-sm font-semibold">Cara kerja</div>
           <div className="mt-4 flex flex-col sm:flex-row gap-4 items-stretch">
             <div className="flex-1 rounded-xl bg-[var(--muted)]/70 p-4 border border-transparent">
-              <div className="w-8 h-8 rounded-full bg-[var(--forge-ink)] dark:bg-white text-white dark:text-black grid place-items-center text-xs font-mono">→</div>
+              <div className="w-8 h-8 rounded-full bg-[var(--forge-ink)] dark:bg-white text-white dark:text-black grid place-items-center"><Pencil size={14} /></div>
               <div className="mt-3 font-medium text-sm">Tulis prompt mentah</div>
               <div className="text-xs text-[var(--forge-muted)] mt-1">Contoh: “buat website portfolio keren”</div>
             </div>
@@ -61,7 +61,7 @@ export default function Home() {
             <div className="flex-1 rounded-xl bg-[var(--muted)]/70 p-4 border border-transparent">
               <div className="w-8 h-8 rounded-full bg-[var(--forge-signal)] text-white grid place-items-center text-xs font-mono">✓</div>
               <div className="mt-3 font-medium text-sm">Copy & bandingkan</div>
-              <div className="text-xs text-[var(--forge-muted)] mt-1">Before 38 → After 89</div>
+              <div className="text-xs text-[var(--forge-muted)] mt-1">Before 38 • After 89</div>
             </div>
           </div>
         </div>
