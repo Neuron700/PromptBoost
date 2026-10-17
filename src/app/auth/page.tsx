@@ -3,7 +3,7 @@ import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import { AlertCircle, ArrowRight, Check, Circle, Eye, EyeOff, Loader2 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
-import PromptField from "@/components/PromptField";
+import PromptGraph from "@/components/PromptGraph";
 
 function GoogleMark() {
   return (
@@ -260,7 +260,7 @@ export default function AuthPage() {
   if (success) {
     return (
       <div className="flex-1">
-        <PromptField />
+        <PromptGraph success />
         <div className="mx-auto max-w-[460px] px-4 py-10 sm:py-14">
           <div className="rounded-2xl border border-[var(--forge-signal)] bg-[var(--card)]/80 backdrop-blur-md p-8 text-center forge-pop">
             <span className="mx-auto grid h-14 w-14 place-items-center rounded-full bg-[var(--forge-signal)] text-white">
@@ -281,7 +281,7 @@ export default function AuthPage() {
   if (userEmail) {
     return (
       <div className="flex-1">
-        <PromptField />
+        <PromptGraph />
         <div className="mx-auto max-w-[460px] px-4 py-10 sm:py-14 flex flex-col gap-4">
           <div className="rounded-2xl border border-[var(--border)] bg-[var(--card)]/75 backdrop-blur-md p-6">
             <div className="text-sm font-semibold">Masuk sebagai</div>
@@ -303,7 +303,7 @@ export default function AuthPage() {
 
   return (
     <div className="flex-1">
-      <PromptField />
+      <PromptGraph />
       <div className="mx-auto max-w-[460px] px-4 py-10 sm:py-14 flex flex-col gap-4">
         <form
           ref={cardRef}
@@ -455,8 +455,8 @@ export default function AuthPage() {
                   {[0, 1, 2, 3].map((i) => (
                     <span
                       key={i}
-                      className="h-1.5 w-8 rounded-full transition-[background-color,transform] duration-[420ms] ease-[cubic-bezier(0.34,1.56,0.64,1)]"
-                      style={{ background: i < pw.score ? meter.color : "var(--muted)", transform: i < pw.score ? "scaleY(1.45)" : "scaleY(1)" }}
+                      className="h-1.5 w-8 rounded-full transition-[background-color,transform] duration-[420ms] ease-[cubic-bezier(0.16,1,0.3,1)]"
+                      style={{ background: i < pw.score ? meter.color : "var(--muted)", transform: i < pw.score ? "scaleY(1.35)" : "scaleY(1)" }}
                     />
                   ))}
                 </span>
