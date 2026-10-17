@@ -7,7 +7,7 @@ export default function Hero() {
   return (
     <section className="relative isolate overflow-hidden border-b border-[var(--border)]">
       <HeroVideo />
-      <div className="relative mx-auto max-w-[1160px] px-4 sm:px-6 pt-12 sm:pt-20 pb-10 sm:pb-16">
+      <div className="relative mx-auto max-w-[1160px] px-4 sm:px-6 pt-14 sm:pt-24 pb-14 sm:pb-24 min-h-[560px] sm:min-h-[640px] flex items-center">
         <div className="max-w-[620px]">
           <div className="inline-flex items-center gap-2 text-xs font-mono tracking-widest bg-[var(--muted)] border border-[var(--border)] rounded-full px-3 py-1">
             <Sparkles size={12} /> FOR MAHASISWA • DEVELOPER • CREATOR
