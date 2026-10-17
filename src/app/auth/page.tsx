@@ -3,6 +3,17 @@ import { useEffect, useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 
+function GoogleMark() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 48 48" aria-hidden focusable="false">
+      <path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9 3.6l6.7-6.7C35.5 2.5 30 0 24 0 14.6 0 6.5 5.4 2.6 13.3l7.8 6c1.9-5.6 7-9.8 13.6-9.8z" />
+      <path fill="#4285F4" d="M46.1 24.6c0-1.6-.1-3.2-.4-4.7H24v9h12.4c-.5 2.7-2.1 5-4.4 6.6l6.7 6.7c3.9-3.6 6.4-8.9 6.4-17.6z" />
+      <path fill="#FBBC05" d="M10.4 28.3c-.5-1.4-.7-2.8-.7-4.3s.3-3 .7-4.3l-7.8-6C1 16.6 0 20.2 0 24s1 7.4 2.6 11.3l7.8-7z" />
+      <path fill="#34A853" d="M24 48c6.5 0 11.9-2.1 15.9-5.8l-7.7-6.3c-2.1 1.4-4.9 2.3-8.2 2.3-6.6 0-11.7-4.2-13.6-9.9l-7.8 6C5.5 42.6 14 48 24 48z" />
+    </svg>
+  );
+}
+
 export default function AuthPage() {
   const supabase = createClient();
   const [email, setEmail] = useState("");
@@ -10,8 +21,8 @@ export default function AuthPage() {
   const [userEmail, setUserEmail] = useState<string | null>(null);
   const [msg, setMsg] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
   const [remember, setRemember] = useState(true);
+  const [showPassword, setShowPassword] = useState(false);
 
   const refresh = async () => {
     const { data } = await supabase.auth.getUser();
@@ -61,6 +72,18 @@ export default function AuthPage() {
     return m || "Terjadi kesalahan. Coba lagi.";
   };
 
+  const loginGoogle = async () => {
+    setLoading(true); setMsg(null);
+    try {
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: "google",
+        options: { redirectTo: `${window.location.origin}/auth/callback?next=/optimizer` },
+      });
+      if (error) setMsg(friendlyError(error));
+    } catch (e: any) { setMsg(friendlyError(e)); }
+    setLoading(false);
+  };
+
   const login = async () => {
     if (!email.includes("@") || password.length < 6) { setMsg("Isi email valid dan password minimal 6 karakter dulu."); return; }
     setLoading(true); setMsg(null);
@@ -85,26 +108,6 @@ export default function AuthPage() {
     await supabase.auth.signOut();
     setUserEmail(null);
     setMsg("Keluar berhasil");
-  };
-  const [cooldown, setCooldown] = useState(0);
-  useEffect(() => {
-    if (cooldown <= 0) return;
-    const t = setTimeout(() => setCooldown((c) => c - 1), 1000);
-    return () => clearTimeout(t);
-  }, [cooldown]);
-  const resend = async () => {
-    if (!email.includes("@")) { setMsg("Isi email dulu baru klik kirim ulang."); return; }
-    if (cooldown > 0) return;
-    setLoading(true); setMsg(null);
-    try {
-      const { error } = await supabase.auth.resend({ type: "signup", email });
-      if (error) setMsg(friendlyError(error));
-      else {
-        setMsg("Kode dikirim ulang. Cek inbox, folder SPAM, dan tab Promotions. Kalau 2 menit tidak masuk, matikan Confirm email di Supabase.");
-        setCooldown(60);
-      }
-    } catch (e: any) { setMsg(friendlyError(e)); }
-    setLoading(false);
   };
 
   if (userEmail) {
@@ -131,8 +134,18 @@ export default function AuthPage() {
         autoComplete="on"
         onSubmit={(e) => { e.preventDefault(); login(); }}
       >
-        <h1 className="text-lg font-semibold">Masuk dengan Email</h1>
-        <p className="text-xs text-[var(--forge-muted)] mt-1">Daftar atau masuk. History akan beda per akun.</p>
+        <h1 className="text-lg font-semibold">Masuk ke Akun Anda</h1>
+        <p className="text-xs text-[var(--forge-muted)] mt-1">Simpan hasil tempa dan riwayat prompt kamu per akun.</p>
+        <button type="button" onClick={loginGoogle} disabled={loading}
+          className="mt-4 w-full min-h-[48px] h-12 rounded-full border border-[var(--border)] bg-[var(--card)] hover:bg-[var(--muted)] text-sm font-medium inline-flex items-center justify-center gap-2.5 cursor-pointer disabled:opacity-50">
+          <GoogleMark />
+          Lanjut dengan Google
+        </button>
+        <div className="mt-4 flex items-center gap-3">
+          <span className="h-px flex-1 bg-[var(--border)]" />
+          <span className="text-[11px] text-[var(--forge-muted)]">atau dengan email</span>
+          <span className="h-px flex-1 bg-[var(--border)]" />
+        </div>
         <label className="block mt-4 text-xs font-medium">Email
           <input
             type="email"
@@ -181,10 +194,7 @@ export default function AuthPage() {
           <button type="button" onClick={register} disabled={loading} className="flex-1 h-11 rounded-full border border-[var(--border)] text-sm font-medium min-h-[48px]">Daftar</button>
         </div>
         {msg && <div className="mt-3 text-xs bg-[var(--muted)] rounded-lg p-2 whitespace-pre-wrap">{msg}</div>}
-        <button type="button" onClick={resend} disabled={loading || cooldown > 0} className="mt-2 w-full min-h-[44px] py-2 px-3 rounded-full border border-dashed border-[var(--border)] text-xs text-[var(--forge-muted)] hover:text-[var(--foreground)] disabled:opacity-50">
-          {cooldown > 0 ? `Tunggu ${cooldown} detik sebelum kirim ulang` : "Kode tidak masuk? Kirim ulang email"}
-        </button>
-        <div className="mt-3 text-xs text-[var(--forge-muted)]">Belum punya akun? Isi email dan password lalu klik Daftar. Sudah punya? Klik Masuk. Password tidak disimpan, yang diingat hanya email biar aman.</div>
+        <div className="mt-3 text-xs text-[var(--forge-muted)]">Belum punya akun? Isi email dan password lalu klik Daftar. Sudah punya? Klik Masuk.</div>
       </form>
     </div>
   );
