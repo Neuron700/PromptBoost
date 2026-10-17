@@ -26,7 +26,7 @@ export default function Home() {
       </section>
 
       <section className="mx-auto max-w-[1160px] px-4 sm:px-6 pb-10">
-        <div className="rounded-2xl border border-[var(--forge-plate-line)] bg-[var(--forge-plate)] text-[var(--forge-paper)] p-6 sm:p-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div className="rounded-2xl border border-[var(--forge-plate-line)] bg-[var(--forge-plate)] text-[var(--forge-plate-fg)] p-6 sm:p-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div>
             <div className="font-mono text-[11px] tracking-[0.16em] opacity-60">SIAP MENEMPA?</div>
             <div className="mt-1 text-xl font-semibold">Mulai dari ide mentah, bawa pulang prompt siap pakai.</div>

@@ -19,6 +19,8 @@
      dipakai untuk panel CTA yang teksnya selalu terang */
   --forge-plate: oklch(0.19 0.02 260);
   --forge-plate-line: oklch(0.32 0.02 260);
+  /* teks di atas plat: SELALU terang, tidak ikut mode */
+  --forge-plate-fg: oklch(0.97 0.005 90);
 
   --background: var(--forge-paper);
   --foreground: var(--forge-ink);
