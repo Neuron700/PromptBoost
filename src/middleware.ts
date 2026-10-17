@@ -41,11 +41,6 @@ export async function middleware(request: NextRequest) {
     url.pathname = "/";
     return NextResponse.redirect(url);
   }
-  if (user && path === "/dashboard") {
-    const url = request.nextUrl.clone();
-    url.pathname = "/";
-    return NextResponse.redirect(url);
-  }
   return supabaseResponse;
 }
 

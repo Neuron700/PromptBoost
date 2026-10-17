@@ -20,6 +20,7 @@ function Skeleton() {
 
 export default function DashboardPage() {
   const [items, setItems] = useState<HistoryItem[] | null>(null);
+  const [demo, setDemo] = useState(false);
 
   useEffect(() => {
     let alive = true;
@@ -32,12 +33,23 @@ export default function DashboardPage() {
         loggedIn = Boolean(data.user);
       } catch {}
 
+      let rows: HistoryItem[] = [];
+      try {
+        const r = await fetch("/api/history", { cache: "no-store" });
+        if (r.ok) {
+          const data = await r.json();
+          if (Array.isArray(data)) rows = data;
+        }
+      } catch {}
+
       if (!alive) return;
-      if (loggedIn) {
-        window.location.replace("/");
-        return;
+      if (loggedIn && rows.length > 0) {
+        setItems(rows);
+        setDemo(false);
+      } else {
+        setItems(demoItems());
+        setDemo(true);
       }
-      setItems(demoItems());
     })();
     return () => {
       alive = false;
@@ -45,5 +57,5 @@ export default function DashboardPage() {
   }, []);
 
   if (items === null) return <Skeleton />;
-  return <DashboardView items={items} demo />;
+  return <DashboardView items={items} demo={demo} />;
 }
